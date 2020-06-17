@@ -1,0 +1,66 @@
+service: my-homepage
+region: eu-west-2
+stage: ${opt:stage}
+provider:
+  name: aws
+  environment:
+    DYNAMO_TABLE: ${self:service}-storage
+  runtime: nodejs12.x
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "s3:ListBucket"
+      Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
+    - Effect: "Allow"
+      Action:
+        - dynamodb:GetItem
+        - dynamodb:UpdateItem
+      Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.DYNAMO_TABLE}"
+    - Effect: "Allow"
+      Action:
+        - "s3:PutObject"
+      Resource:
+        Fn::Join:
+          - ""
+          - - "arn:aws:s3:::"
+            - "Ref" : "ServerlessDeploymentBucket"
+            - "/*"
+functions:
+  recipesAPI:
+    name: ${self:service}-recipesAPI
+    handler: handler.query
+    events:
+      - http:
+          path: query 
+          method: get
+resources:
+  Resources:
+    MyStuffTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: N
+          - AttributeName: Category
+            AttributeType: S
+          - AttributeName: Subcategory
+            AttributeType: S
+        KeySchema:
+          - AttributeName: Category
+            KeyType: HASH
+          - AttributeName: id
+            KeyType: RANGE
+        LocalSecondaryIndexes:
+          - IndexName: 'SubcategoryIndex'
+            KeySchema:
+              - AttributeName: Category
+                KeyType: HASH
+              - AttributeName: Subcategory
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+        BillingMode: PROVISIONED
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:provider.environment.DYNAMO_TABLE}

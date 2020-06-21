@@ -6,8 +6,8 @@ export default function ViewRecipe(props) {
   const [recipe, setRecipe] = useState(null);
 
   useEffect(() => {
-    getRecipe(props.match.params.id, setRecipe)
-  }, [props.match.params.id])
+    getRecipe(props.match.params.name, setRecipe)
+  }, [props.match.params.name])
 if (!recipe) { return <div /> }
 
   return (

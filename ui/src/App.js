@@ -21,7 +21,7 @@ function App() {
                 <Redirect to="/recipes" />
               </Route>
               <Route exact path="/recipes" component={RecipesList} />
-              <Route exact path="/recipes/:id" component={ViewRecipe} />
+              <Route exact path="/recipes/:name" component={ViewRecipe} />
             </Router>
         </div>
       </Content>

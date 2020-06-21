@@ -4,6 +4,7 @@ config.update({region: 'eu-west-2'});
 const database = new DynamoDB.DocumentClient({
   apiVersion: '2012-08-10',
 });
+
 module.exports.getRecipes = () => {
   var params = {
     TableName: process.env.DYNAMO_TABLE,
@@ -25,11 +26,11 @@ module.exports.getRecipes = () => {
   });
 }
 
-module.exports.getRecipeForId = (id) => {
+module.exports.getRecipeByName = (name) => {
   const params = {
     TableName: process.env.DYNAMO_TABLE,
     Key: {
-      'id': id,
+      'Name': name,
       'Category': 'RECIPE'
     },
   };

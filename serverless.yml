@@ -54,26 +54,15 @@ resources:
       Type: 'AWS::DynamoDB::Table'
       Properties:
         AttributeDefinitions:
-          - AttributeName: id
-            AttributeType: N
           - AttributeName: Category
             AttributeType: S
-          - AttributeName: Subcategory
+          - AttributeName: Name
             AttributeType: S
         KeySchema:
           - AttributeName: Category
             KeyType: HASH
-          - AttributeName: id
+          - AttributeName: Name
             KeyType: RANGE
-        LocalSecondaryIndexes:
-          - IndexName: 'SubcategoryIndex'
-            KeySchema:
-              - AttributeName: Category
-                KeyType: HASH
-              - AttributeName: Subcategory
-                KeyType: RANGE
-            Projection:
-              ProjectionType: ALL
         BillingMode: PROVISIONED
         ProvisionedThroughput:
           ReadCapacityUnits: 1

@@ -21,7 +21,7 @@ export default function RecipesList () {
             <h2> { cuisine } </h2>
             <ul>
               {recipes.filter(r => r.cuisine === cuisine).map(recipe => {
-                 return <li key={recipe.id}><Link to={`/recipes/${recipe.id}`}>{recipe.name}</Link></li>
+                 return <li key={recipe.id}><Link to={`/recipes/${recipe.name}`}>{recipe.name}</Link></li>
               })}
             </ul>
           </div>

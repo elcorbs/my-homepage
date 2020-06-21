@@ -2,10 +2,9 @@ module.exports.schema =
   `
     type Query {
       recipes: [Recipe]
-      recipe(id: Int): Recipe
+      recipe(name: String): Recipe
     }
     type Recipe {
-      id: Int
       name: String
       cuisine: String
       ingredients: [Ingredient]

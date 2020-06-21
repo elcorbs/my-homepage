@@ -1,3 +1,7 @@
+plugins:
+  - serverless-dynamodb-local
+  - serverless-offline
+  - serverless-finch
 service: my-homepage
 region: eu-west-2
 stage: ${opt:stage}
@@ -5,6 +9,7 @@ provider:
   name: aws
   environment:
     DYNAMO_TABLE: ${self:service}-storage
+    REACT_APP_API_URL: https://6lac5t2w1i.execute-api.eu-west-2.amazonaws.com/production/query
   runtime: nodejs12.x
   iamRoleStatements:
     - Effect: "Allow"
@@ -15,6 +20,9 @@ provider:
       Action:
         - dynamodb:GetItem
         - dynamodb:UpdateItem
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:PutItem
       Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.DYNAMO_TABLE}"
     - Effect: "Allow"
       Action:
@@ -25,10 +33,17 @@ provider:
           - - "arn:aws:s3:::"
             - "Ref" : "ServerlessDeploymentBucket"
             - "/*"
+package:
+  exclude:
+    - ui/**
+    - api/node_modules/serverless-dynamodb-client/**
+    - api/node_modules/serverless-dynamodb-local/**
+    - api/node_modules/serverless-offline/**
 functions:
   recipesAPI:
     name: ${self:service}-recipesAPI
-    handler: handler.query
+    handler: api/handler.query
+    cors: true
     events:
       - http:
           path: query 
@@ -64,3 +79,16 @@ resources:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
         TableName: ${self:provider.environment.DYNAMO_TABLE}
+    uiBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: "emma-corbett.me.uk"    
+custom:
+  dynamodb:
+    stages:
+      - dev
+  client:
+    bucketName: "emma-corbett.me.uk" 
+    distributionFolder: ui/build
+    indexDocument: index.html
+    errorDocument: index.html

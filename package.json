@@ -2,13 +2,14 @@
   "name": "my-homepage",
   "version": "1.0.0",
   "description": "",
-  "main": "handler.js",
+  "main": "index.js",
   "scripts": {
-    "test": ""
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "graphql": "^15.1.0"
+    "antd": "^4.3.5",
+    "serverless-finch": "^2.5.2"
   }
 }

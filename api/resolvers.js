@@ -3,7 +3,7 @@ const { getRecipeForId, getRecipes } = require("./dynamodbGateway");
 const dbToGrapQL = (recipe) => ({
   id: recipe.id,
   name: recipe.Name,
-  subCategory: recipe.SubCategory,
+  cuisine: recipe.Cuisine,
   method: recipe.Method,
   ingredients: recipe.Ingredients.map(i => ({
     name: i.Name,

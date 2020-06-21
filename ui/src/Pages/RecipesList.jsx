@@ -20,7 +20,7 @@ export default function RecipesList () {
           <div key={cuisine}>
             <h2> { cuisine } </h2>
             <ul>
-              {recipes.filter(r => r.subCategory === cuisine).map(recipe => {
+              {recipes.filter(r => r.cuisine === cuisine).map(recipe => {
                  return <li key={recipe.id}><Link to={`/recipes/${recipe.id}`}>{recipe.name}</Link></li>
               })}
             </ul>
@@ -32,6 +32,6 @@ export default function RecipesList () {
 } 
 
 function getCuisines (recipes) {
-  const distinct = (value, index, self) => self.findIndex(x => x.subCategory === value.subCategory) === index;
-  return recipes.filter(distinct).map(r => r.subCategory);
+  const distinct = (value, index, self) => self.findIndex(x => x.cuisine === value.cuisine) === index;
+  return recipes.filter(distinct).map(r => r.cuisine);
 }

@@ -1,11 +1,11 @@
 
 export async function getRecipes(callback) {
-  const schema = `query={recipes{id, name, subCategory, ingredients{name, amount, measurement}, method}}`;
+  const schema = `query={recipes{id, name, cuisine, ingredients{name, amount, measurement}, method}}`;
   await queryApi(schema, data => callback(data.recipes))
 }
 
 export async function getRecipe(id, callback){
-  const schema = `query={recipe(id: ${id}){id, name, subCategory, ingredients{name, amount, measurement}, method}}`;
+  const schema = `query={recipe(id: ${id}){id, name, cuisine, ingredients{name, amount, measurement}, method}}`;
   await queryApi(schema, data => callback(data.recipe))
 }
 

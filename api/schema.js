@@ -7,7 +7,7 @@ module.exports.schema =
     type Recipe {
       id: Int
       name: String
-      subCategory: String
+      cuisine: String
       ingredients: [Ingredient]
       method: [String]
     }

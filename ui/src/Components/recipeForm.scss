@@ -1,0 +1,17 @@
+.listInput {
+  & .ant-col-16 {
+    max-width: 100%;
+  }
+}
+
+.addSelection {
+  background-color: transparent;
+  border: none;
+  flex: none;
+  padding: 8px;
+  display: block;
+  cursor: pointer; 
+  &:hover {
+    color: #00a8ff
+  }
+}

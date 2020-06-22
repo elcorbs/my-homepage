@@ -1,34 +1,30 @@
 const { getRecipeByName, getRecipes, addRecipe } = require("./dynamodbGateway");
 
-const dbToGrapQL = (recipe) => ({
+const dbToGraphQL = (recipe) => ({
   name: recipe.Name,
   cuisine: recipe.Cuisine,
   method: recipe.Method,
   servings: recipe.Servings,
-  ingredients: recipe.Ingredients.map(i => ({
+  ingredients: recipe.Ingredients ? recipe.Ingredients.map(i => ({
     name: i.Name,
     amount: i.Amount,
     measurement: i.Measurement
-  }))
+  })) : undefined
 });
 
 const graphQlToDb = (recipe) => ({
-  Name: recipe.name,
-  Cuisine: recipe.cuisine,
-  Method: recipe.method,
-  Ingredients: recipe.ingredients.map(i => ({
-    Name: i.name,
-    Amount: i.amount,
-    Measurement: i.measurement
-  })) 
-});
+    Name: recipe.name,
+    Cuisine: recipe.cuisine,
+    Method: recipe.method,
+    Ingredients: recipe.ingredients ? recipe.ingredients.map(i => ({
+      Name: i.name,
+      Amount: i.amount,
+      Measurement: i.measurement
+    })) : undefined 
+})
 
 module.exports.resolvers = {
-  Query: {
-    recipe: (_, { name }) => getRecipeByName(name).then(data => dbToGrapQL(data)),
-    recipes: (_) => getRecipes().then(data => data.map(recipe => dbToGrapQL(recipe)))
-  },
-  Mutation: {
-    addRecipe: (_, { recipe }) => addRecipe(graphQlToDb(recipe).then(data => dbToGrapQL(data)))
-  }
+    recipe: ({ name }) => getRecipeByName(name).then(data => dbToGraphQL(data)),
+    recipes: () => getRecipes().then(data => data.map(recipe => dbToGraphQL(recipe))),
+    addRecipe: ({ input }) => addRecipe(graphQlToDb(input)).then(data => dbToGraphQL(data))
 }

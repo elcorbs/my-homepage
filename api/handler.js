@@ -1,15 +1,9 @@
 const { resolvers } = require("./resolvers");
 const { schema } = require( "./schema");
-const { makeExecutableSchema } = require('graphql-tools');
-const { gql } = require('apollo-server');
-const { graphql } = require('graphql');
+const { graphql, buildSchema } = require('graphql');
 
-const myGraphQLSchema = makeExecutableSchema({
-  typeDefs: gql(schema),
-  resolvers: resolvers,
-});
-
-module.exports.query = (event, context, callback) => graphql(myGraphQLSchema, event.queryStringParameters.query)
+module.exports.query = (event, context, callback) => {
+  return graphql(buildSchema(schema), event.queryStringParameters.query, resolvers)
 .then(
   result => {
     callback(null, {
@@ -26,3 +20,4 @@ module.exports.query = (event, context, callback) => graphql(myGraphQLSchema, ev
   },
   err => callback(err)
 )
+}

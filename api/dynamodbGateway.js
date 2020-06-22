@@ -49,33 +49,22 @@ module.exports.getRecipeByName = (name) => {
 };
 
 module.exports.addRecipe = (recipe) => {
-  console.log(recipe)
-  const ingredientsQuery = recipe.ingredients.map(i => (
-    {
-      "M": {
-        "Amount": { "N": i.amount },
-        "Measurement": { "S": i.measurement},
-        "Name": { "S": i.name }
-      }
-    }
-  ));
   const params = {
     TableName: process.env.DYNAMO_TABLE,
     Item: {
-      "Name" : {S: recipe.name},
-      "Category" : {S: 'RECIPE'},
-      "Cuisine": {
-        S: recipe.cuisine
-      },
-      "Ingredients": { L: ingredientsQuery },
-      "Method": recipe.method.map(m => ({S: m})),
-      "Servings": {S: recipe.servings}
+      "Name" : recipe.Name,
+      "Category" : 'RECIPE'
     }
   };
-  console.log(params.Item)
+  if (recipe.Ingredients) { params.Item["Ingredients"] = recipe.Ingredients }
+  if (recipe.Method) { params.Item["Method"] = recipe.Method }
+  if (recipe.Cuisine) { params.Item["Cuisine"] = recipe.Cuisine }
+  if (recipe.Servings) { params.Item["Servings"] = recipe.Servings }
+
+  console.log("Adding to db", params)
   return new Promise((resolve, reject) => {
     database
-      .putItem(params, function(err, data) {
+      .put(params, function(err) {
         if (err) {
           console.log(`There was an error writing the recipe to the db`, err);
           return reject(err);

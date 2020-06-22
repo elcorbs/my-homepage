@@ -47,7 +47,7 @@ functions:
     events:
       - http:
           path: query 
-          method: get
+          method: ANY
 resources:
   Resources:
     MyStuffTable:

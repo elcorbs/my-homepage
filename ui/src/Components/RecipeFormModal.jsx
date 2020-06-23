@@ -132,7 +132,9 @@ function Selector({ options, placeholder, width, formProps }) {
 
     setName('');
   };
-  const onNameChange = event => setName(event.target.value);
+  const onNameChange = event => {
+    setName(event.target.value);
+  }
 
   return (
     <Form.Item {...formProps} >
@@ -141,15 +143,21 @@ function Selector({ options, placeholder, width, formProps }) {
         style={{ width }}
         placeholder={placeholder}
         optionFilterProp="children"
+        onSearch={value => setName(value)}
         filterOption={(input, option) =>
           option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
         }
         dropdownRender={menu => (
           <div>
             {menu}
-            <Divider style={{ margin: '4px 0' }} />
-            <div style={{ display: 'flex', flexWrap: 'nowrap', padding: 8 }}>
-              <Input style={{ flex: 'auto' }} value={name} onChange={onNameChange} />
+            <Divider style={{ margin: '2px 0' }} />
+            <div style={{ display: 'flex', flexWrap: 'nowrap'}}>
+              <Input
+                style={{backgroundColor: "transparent", border: "none", color: "rgb(0,0,0.85)", flex: "auto", cursor: "default"}}
+                value={name}
+                onChange={onNameChange}
+                disabled
+              />
               <button
                 className={"addSelection"}
                 onClick={addItem}

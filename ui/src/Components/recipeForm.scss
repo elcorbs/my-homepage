@@ -14,4 +14,14 @@
   &:hover {
     color: #00a8ff
   }
+  &:focus {
+    border: none;
+  }
+}
+
+.readonlyInput {
+  background-color: none;
+  border: none;
+  color: rgb(0,0,0.85);
+  flex: auto;
 }

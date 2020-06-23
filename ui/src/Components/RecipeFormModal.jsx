@@ -1,19 +1,13 @@
 import React from "react";
 import { Modal, Form, Input, Button } from "antd"
 import SelectorWithAdd from "./FormItems/SelectorWithAdd";
-import { addRecipe } from "../Gateway/query-api";
 import "./recipeForm.scss";
 import MealTypeDropdown from "./FormItems/MealTypeDropdown";
 import IngredientsList from "./FormItems/IngredientsList";
 import Method from "./FormItems/Method";
 const { TextArea } = Input;
 
-export default function RecipeFormModal({ closeModal, recipeAdded, cuisines, ingredients }) {
-  const submitForm = values => {
-    console.log(values)
-    addRecipe(values, recipeAdded)
-  }
-
+export default function RecipeFormModal({ closeModal, submitForm, cuisines, ingredients, recipe }) {
   const layout = {
     labelCol: { span: 8 },
     wrapperCol: { span: 16 },
@@ -29,7 +23,7 @@ export default function RecipeFormModal({ closeModal, recipeAdded, cuisines, ing
       <Form
         {...layout}
         name="basic"
-        initialValues={{ remember: true }}
+        initialValues={{ remember: true, ...recipe }}
         onFinish={submitForm}
       >
         <Form.Item
@@ -37,7 +31,7 @@ export default function RecipeFormModal({ closeModal, recipeAdded, cuisines, ing
           name="name"
           rules={[{ required: true, message: 'Please enter the recipe name' }]}
         >
-          <Input />
+          <Input disabled={recipe ? true : false}/>
         </Form.Item>
         <MealTypeDropdown />
         <SelectorWithAdd

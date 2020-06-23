@@ -10,7 +10,19 @@ export async function getRecipe(name, callback){
 }
 
 export async function addRecipe(recipe, callback){
-  const recipeStringLiteral = `{
+  const recipeStringLiteral = mapRecipeToQueryStringLiteral(recipe);
+  const schema = `query=mutation {addRecipe(input: ${recipeStringLiteral} ){name, cuisine, ingredients{name, measurement}}}`;
+  await queryApi(schema, data => callback(data.addRecipe), 'POST')
+}
+
+export async function editRecipe(recipe, callback){
+  const recipeStringLiteral = mapRecipeToQueryStringLiteral(recipe);
+  const schema = `query=mutation {addRecipe(input: ${recipeStringLiteral} ){name, cuisine, type, notes, ingredients{name, amount, measurement}, method}}`;
+  await queryApi(schema, data => callback(data.addRecipe), 'POST')
+}
+
+function mapRecipeToQueryStringLiteral(recipe){
+  return `{
     name: "${recipe.name}",
     ${recipe.cuisine ? `cuisine:  "${recipe.cuisine}",` : "" }
     ${recipe.ingredients ? `ingredients: [${recipe.ingredients.map(i => 
@@ -18,9 +30,7 @@ export async function addRecipe(recipe, callback){
     ${recipe.method ? `method: [${recipe.method.map(step => `"${step}"`)}],` : "" }
     ${recipe.notes ? `notes: "${recipe.notes},"` : ""}
     ${recipe.type ? `type: ${recipe.type},`: ""}
-  }`
-  const schema = `query=mutation {addRecipe(input: ${recipeStringLiteral} ){name, cuisine, ingredients{name, measurement}}}`;
-  await queryApi(schema, data => callback(data.addRecipe), 'POST')
+  }`;
 }
 
 async function queryApi(query, callback, method = 'GET') {

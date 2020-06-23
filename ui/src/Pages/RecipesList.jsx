@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { getRecipes } from "../Gateway/query-api";
+import { getRecipes, addRecipe } from "../Gateway/query-api";
 import { Link } from "react-router-dom"
 import BreadcrumbNavigator from "../Components/BreadcrumbNavigator";
 import RecipeFormModal from "../Components/RecipeFormModal";
@@ -24,6 +24,9 @@ export default function RecipesList () {
     })
     closeForm();
   }
+  const submitForm = values => {
+    addRecipe(values, recipeAdded)
+  }
   return (
     <div>
       <BreadcrumbNavigator />
@@ -33,7 +36,7 @@ export default function RecipesList () {
       {recipeFormVisible && (
         <RecipeFormModal
           closeModal={closeForm}
-          recipeAdded={recipeAdded}
+          submitForm={submitForm}
           cuisines={cuisines}
           ingredients={ingredients}
         /> 

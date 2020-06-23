@@ -1,27 +1,47 @@
-import React, {useState, useEffect} from "react";
-import { getRecipe } from "../Gateway/query-api";
+import React, { useState, useEffect } from "react";
+import { getRecipe, editRecipe } from "../Gateway/query-api";
 import BreadcrumbNavigator from "../Components/BreadcrumbNavigator";
+import { EditOutlined } from "@ant-design/icons";
+import RecipeFormModal from "../Components/RecipeFormModal";
+import {Button} from "antd";
 
 export default function ViewRecipe(props) {
   const [recipe, setRecipe] = useState(null);
+  const [editting, setEditting] = useState(false);
 
   useEffect(() => {
     getRecipe(props.match.params.name, setRecipe)
   }, [props.match.params.name])
-if (!recipe) { return <div /> }
+  if (!recipe) { return <div /> }
+
+  const openEdit = () => setEditting(true);
+  const submitEdit = (edittedRecipe) => {
+    editRecipe(edittedRecipe, setRecipe);
+    closeModal()
+  }
+  const closeModal = () => setEditting(false);
 
   return (
     <div>
       <BreadcrumbNavigator recipeName={recipe.name.toLowerCase()} />
+      { editting &&
+        <RecipeFormModal
+          closeModal={closeModal}
+          submitForm={submitEdit}
+          cuisines={[recipe.cuisine]}
+          ingredients={{ingredients: recipe.ingredients.map(i => i.ingredients), measures: recipe.ingredients.map(i => i.measurement)}}
+          recipe={recipe}
+        />
+      }
       <h2>
-        {recipe.name}
+        {recipe.name} <Button style={{border: "none", backgroundColor: "transparent"}} onClick={openEdit}><EditOutlined /></Button>
       </h2>
-      <p style={{fontStyle: "italic", color: "rgb(0,0,0,0.47)"}}>
+      <p style={{ fontStyle: "italic", color: "rgb(0,0,0,0.47)" }}>
         {recipe.type}
       </p>
       {recipe.ingredients ? <ul>
         {recipe.ingredients.map(i => <li key={i.name}>{i.amount} {i.measurement} {i.name} </li>)}
-      </ul> : null }
+      </ul> : null}
       {recipe.method ? <ol>
         {recipe.method.map((m, index) => <li key={index}>{m}</li>)}
       </ol> : null}

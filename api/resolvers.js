@@ -5,6 +5,8 @@ const dbToGraphQL = (recipe) => ({
   cuisine: recipe.Cuisine,
   method: recipe.Method,
   servings: recipe.Servings,
+  type: recipe.Type,
+  notes: recipe.Notes,
   ingredients: recipe.Ingredients ? recipe.Ingredients.map(i => ({
     name: i.Name,
     amount: i.Amount,
@@ -16,6 +18,9 @@ const graphQlToDb = (recipe) => ({
     Name: recipe.name,
     Cuisine: recipe.cuisine,
     Method: recipe.method,
+    Servings: recipe.servings,
+    Type: recipe.type,
+    Notes: recipe.notes,
     Ingredients: recipe.ingredients ? recipe.ingredients.map(i => ({
       Name: i.name,
       Amount: i.amount,

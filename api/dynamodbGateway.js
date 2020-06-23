@@ -60,6 +60,8 @@ module.exports.addRecipe = (recipe) => {
   if (recipe.Method) { params.Item["Method"] = recipe.Method }
   if (recipe.Cuisine) { params.Item["Cuisine"] = recipe.Cuisine }
   if (recipe.Servings) { params.Item["Servings"] = recipe.Servings }
+  if (recipe.Type) { params.Item["Type"] = recipe.Type}
+  if (recipe.Notes) { params.Item["Notes"] = recipe.Notes }
 
   console.log("Adding to db", params)
   return new Promise((resolve, reject) => {

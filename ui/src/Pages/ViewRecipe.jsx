@@ -16,12 +16,18 @@ if (!recipe) { return <div /> }
       <h2>
         {recipe.name}
       </h2>
+      <p style={{fontStyle: "italic", color: "rgb(0,0,0,0.47)"}}>
+        {recipe.type}
+      </p>
       {recipe.ingredients ? <ul>
         {recipe.ingredients.map(i => <li key={i.name}>{i.amount} {i.measurement} {i.name} </li>)}
       </ul> : null }
       {recipe.method ? <ol>
         {recipe.method.map((m, index) => <li key={index}>{m}</li>)}
       </ol> : null}
+      <p>
+        {recipe.notes}
+      </p>
     </div>
   )
 }

@@ -7,12 +7,22 @@ module.exports.schema =
     type Mutation {
       addRecipe(input: RecipeInput): Recipe
     }
+    enum MealType {
+      Breakfast
+      Lunch
+      Dinner
+      Side
+      Salad
+      SmallPlate
+    }
     type Recipe {
       name: String
       cuisine: String
       servings: String
       ingredients: [Ingredient]
       method: [String]
+      type: MealType
+      notes: String
     }
     type Ingredient {
       name: String
@@ -25,6 +35,8 @@ module.exports.schema =
       servings: String
       ingredients: [IngredientInput]
       method: [String]
+      type: MealType
+      notes: String
     }
     input IngredientInput {
       name: String

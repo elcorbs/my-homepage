@@ -24,6 +24,9 @@ export default function MealTypeDropdown() {
         <Option value="Side">Side</Option>
         <Option value="Salad">Salad</Option>
         <Option value="SmallPlate">Small Plate</Option>
+        <Option value="Dessert">Dessert</Option>
+        <Option value="Bread">Bread</Option>
+        <Option value="Dip">Dip</Option>
       </Select>
     </Form.Item>
   )

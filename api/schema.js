@@ -3,6 +3,7 @@ module.exports.schema =
     type Query {
       recipes: [Recipe]
       recipe(name: String): Recipe
+      repeatableValues: ListTypes
     }
     type Mutation {
       addRecipe(input: RecipeInput): Recipe
@@ -15,10 +16,15 @@ module.exports.schema =
       Salad
       SmallPlate
     }
+    type ListTypes {
+      ingredients: [String]
+      measures: [String]
+      cuisines: [String]
+    }
     type Recipe {
       name: String
       cuisine: String
-      servings: String
+      servings: Int?
       ingredients: [Ingredient]
       method: [String]
       type: MealType

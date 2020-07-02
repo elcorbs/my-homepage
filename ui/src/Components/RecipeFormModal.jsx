@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Form, Input, Button } from "antd"
+import { Modal, Form, Input, Button, InputNumber } from "antd"
 import SelectorWithAdd from "./FormItems/SelectorWithAdd";
 import "./recipeForm.scss";
 import MealTypeDropdown from "./FormItems/MealTypeDropdown";

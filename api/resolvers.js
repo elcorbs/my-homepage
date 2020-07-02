@@ -1,4 +1,4 @@
-const { getRecipeByName, getRecipes, addRecipe } = require("./dynamodbGateway");
+const { getRecipeByName, getRecipes, addRecipe, getStoredValues } = require("./dynamodbGateway");
 
 const dbToGraphQL = (recipe) => ({
   name: recipe.Name,
@@ -31,5 +31,9 @@ const graphQlToDb = (recipe) => ({
 module.exports.resolvers = {
     recipe: ({ name }) => getRecipeByName(name).then(data => dbToGraphQL(data)),
     recipes: () => getRecipes().then(data => data.map(recipe => dbToGraphQL(recipe))),
-    addRecipe: ({ input }) => addRecipe(graphQlToDb(input)).then(data => dbToGraphQL(data))
+    addRecipe: ({ input }) => addRecipe(graphQlToDb(input)).then(data => dbToGraphQL(data)),
+    repeatableValues: () => getStoredValues().then(data => {
+      console.log(data)
+      return data
+    })
 }

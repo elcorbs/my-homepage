@@ -77,3 +77,41 @@ module.exports.addRecipe = (recipe) => {
     );
   });
 }
+
+module.exports.getStoredValues = () => {
+  const params = {
+    TableName: process.env.DYNAMO_TABLE,
+    ProjectionExpression: "Cuisine, Ingredients",
+  };
+
+  return new Promise((resolve, reject) => {
+    database.scan(params, function(err, data) {
+      if (err) {
+        console.log(`There was an error scanning the DB`, err)
+        return reject(err);
+      }
+      const cuisines = data.Items.filter(distinctCuisine).map(r => r.Cuisine).sort();
+
+      const allIngredients = data.Items
+        .map(r => r.Ingredients)
+        .flat()
+        .filter(distinctIngredient)
+        .map(i => i.Name)
+        .sort();
+
+      const measures = allIngredients
+        .filter(distinctMeasurement).map(i => i.Measurement)
+        .filter(measure => measure)
+        .sort()
+      return resolve({
+        cuisines,
+        ingredients,
+        measures
+      })
+    });
+  })
+}
+
+const distinctMeasurement = (value, index, self) => self.findIndex(x => x.Measurement === value.Measurement) === index;
+const distinctIngredient = (value, index, self) => self.findIndex(x => x.Name === value.Name) === index;
+const distinctCuisine = (value, index, self) => self.findIndex(x => x.Cuisine === value.Cuisine) === index;

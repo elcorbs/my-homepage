@@ -3,15 +3,16 @@ const { getRecipeByName, getRecipes, addRecipe, getStoredValues } = require("./d
 const dbToGraphQL = (recipe) => ({
   name: recipe.Name,
   cuisine: recipe.Cuisine,
-  method: recipe.Method,
+  method: recipe.Method ? recipe.Method : [],
   servings: recipe.Servings,
   type: recipe.Type,
   notes: recipe.Notes,
+  recipeLink: recipe.RecipeLink,
   ingredients: recipe.Ingredients ? recipe.Ingredients.map(i => ({
     name: i.Name,
     amount: i.Amount,
     measurement: i.Measurement
-  })) : undefined
+  })) : []
 });
 
 const graphQlToDb = (recipe) => ({
@@ -21,6 +22,7 @@ const graphQlToDb = (recipe) => ({
     Servings: recipe.servings,
     Type: recipe.type,
     Notes: recipe.notes,
+    RecipeLink: recipe.recipeLink,
     Ingredients: recipe.ingredients ? recipe.ingredients.map(i => ({
       Name: i.name,
       Amount: i.amount,

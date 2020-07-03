@@ -56,14 +56,16 @@ module.exports.addRecipe = (recipe) => {
       "Category" : 'RECIPE'
     }
   };
+  console.log("Trying to add recipe to the db", recipe)
   if (recipe.Ingredients) { params.Item["Ingredients"] = recipe.Ingredients }
   if (recipe.Method) { params.Item["Method"] = recipe.Method }
   if (recipe.Cuisine) { params.Item["Cuisine"] = recipe.Cuisine }
   if (recipe.Servings) { params.Item["Servings"] = recipe.Servings }
   if (recipe.Type) { params.Item["Type"] = recipe.Type}
   if (recipe.Notes) { params.Item["Notes"] = recipe.Notes }
+  if (recipe.RecipeLink) { params.Item["RecipeLink"] = recipe.RecipeLink }
 
-  console.log("Adding to db", params)
+  console.log("Adding to db with params", params)
   return new Promise((resolve, reject) => {
     database
       .put(params, function(err) {
@@ -92,12 +94,8 @@ module.exports.getStoredValues = () => {
       }
       const cuisines = data.Items.filter(distinctCuisine).map(r => r.Cuisine).sort();
 
-      const allIngredients = data.Items
-        .map(r => r.Ingredients)
-        .flat()
-        .filter(distinctIngredient)
-        .map(i => i.Name)
-        .sort();
+      const allIngredients = data.Items.map(r => r.Ingredients).flat();
+      const ingredients = allIngredients.filter(distinctIngredient).map(i => i.Name).sort();
 
       const measures = allIngredients
         .filter(distinctMeasurement).map(i => i.Measurement)

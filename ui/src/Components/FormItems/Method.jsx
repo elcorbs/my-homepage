@@ -17,6 +17,7 @@ export default function Method() {
   return (
     <Form.List name="method">
       {(fields, { add, remove }) => {
+        console.log(fields)
         return (
           <div>
             {fields.map((field, index) => (

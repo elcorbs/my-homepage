@@ -3,7 +3,7 @@ const { schema } = require( "./schema");
 const { graphql, buildSchema } = require('graphql');
 
 module.exports.query = (event, context, callback) => {
-  return graphql(buildSchema(schema), event.queryStringParameters.query, resolvers)
+  return graphql(buildSchema(schema), event.body, resolvers)
 .then(
   result => {
     callback(null, {

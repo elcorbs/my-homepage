@@ -24,11 +24,12 @@ module.exports.schema =
     type Recipe {
       name: String
       cuisine: String
-      servings: Int?
+      servings: Int
       ingredients: [Ingredient]
       method: [String]
       type: MealType
       notes: String
+      recipeLink: String
     }
     type Ingredient {
       name: String
@@ -38,11 +39,12 @@ module.exports.schema =
     input RecipeInput {
       name: String!
       cuisine: String
-      servings: String
+      servings: Int
       ingredients: [IngredientInput]
       method: [String]
       type: MealType
       notes: String
+      recipeLink: String
     }
     input IngredientInput {
       name: String

@@ -29,7 +29,6 @@ export default function ViewRecipe(props) {
           closeModal={closeModal}
           submitForm={submitEdit}
           cuisines={[recipe.cuisine]}
-          ingredients={{ingredients: recipe.ingredients.map(i => i.ingredients), measures: recipe.ingredients.map(i => i.measurement)}}
           recipe={recipe}
         />
       }
@@ -37,8 +36,10 @@ export default function ViewRecipe(props) {
         {recipe.name} <Button style={{border: "none", backgroundColor: "transparent"}} onClick={openEdit}><EditOutlined /></Button>
       </h2>
       <p style={{ fontStyle: "italic", color: "rgb(0,0,0,0.47)" }}>
-        {recipe.type}
+        {recipe.type} <br />
+        {recipe.servings ? `serves ${recipe.servings}` : ""}
       </p>
+      {recipe.recipeLink ? <a href={recipe.recipeLink} target="_blank"> Link to recipe here</a> : null}
       {recipe.ingredients ? <ul>
         {recipe.ingredients.map(i => <li key={i.name}>{i.amount} {i.measurement} {i.name} </li>)}
       </ul> : null}

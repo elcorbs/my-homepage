@@ -13,7 +13,6 @@ export default function RecipesList () {
   }, [])
   if (recipes.length === 0 ) { return <div />}
   const cuisines = getCuisines(recipes);
-  const ingredients = getIngredients(recipes);
   const openForm = () => openRecipeForm(true); 
   const closeForm = () => openRecipeForm(false); 
   const recipeAdded = (newRecipe) => {
@@ -38,7 +37,6 @@ export default function RecipesList () {
           closeModal={closeForm}
           submitForm={submitForm}
           cuisines={cuisines}
-          ingredients={ingredients}
         /> 
       )}
       {cuisines.map(cuisine => {
@@ -57,22 +55,7 @@ export default function RecipesList () {
   )
 } 
 
-function getIngredients (recipes) {
-  const allIngredients = recipes.map(r => r.ingredients).flat();
-
-  const distinctMeasurement = (value, index, self) => self.findIndex(x => x.measurement === value.measurement) === index;
-  const distinctIngredient = (value, index, self) => self.findIndex(x => x.name === value.name) === index;
-  const ingredients = allIngredients.filter(distinctIngredient).map(i => i.name);
-  const measures = allIngredients
-    .filter(distinctMeasurement).map(i => i.measurement)
-    .filter(measure => measure);
-  return {
-    ingredients,
-    measures
-  }
-}
-
 function getCuisines (recipes) {
   const distinct = (value, index, self) => self.findIndex(x => x.cuisine === value.cuisine) === index;
-  return recipes.filter(distinct).map(r => r.cuisine);
+  return recipes.filter(distinct).map(r => r.cuisine).sort();
 }

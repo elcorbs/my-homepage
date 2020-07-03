@@ -15,6 +15,9 @@ module.exports.schema =
       Side
       Salad
       SmallPlate
+      Dessert
+      Bread
+      Dip
     }
     type ListTypes {
       ingredients: [String]

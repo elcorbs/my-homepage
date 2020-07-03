@@ -94,7 +94,8 @@ module.exports.getStoredValues = () => {
       }
       const cuisines = data.Items.filter(distinctCuisine).map(r => r.Cuisine).sort();
 
-      const allIngredients = data.Items.map(r => r.Ingredients).flat();
+      const allIngredients = data.Items.map(r => r.Ingredients).flat().filter(r => r);
+      console.log(allIngredients)
       const ingredients = allIngredients.filter(distinctIngredient).map(i => i.Name).sort();
 
       const measures = allIngredients

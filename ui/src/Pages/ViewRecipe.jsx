@@ -44,11 +44,13 @@ export default function ViewRecipe(props) {
         {recipe.ingredients.map(i => <li key={i.name}>{i.amount} {i.measurement} {i.name} </li>)}
       </ul> : null}
       {recipe.method ? <ol>
-        {recipe.method.map((m, index) => <li key={index}>{m}</li>)}
+        {recipe.method.map((m, index) => <li key={index}>{splitTextIntoHtmlLines(m)}</li>)}
       </ol> : null}
       <p>
-        {recipe.notes}
+      {splitTextIntoHtmlLines(recipe.notes)}
       </p>
     </div>
   )
 }
+
+const splitTextIntoHtmlLines = (text) => text ? text.split("\n").map(l => <>{l}<br /></>): null;

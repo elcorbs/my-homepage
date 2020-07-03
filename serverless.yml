@@ -23,6 +23,7 @@ provider:
         - dynamodb:Query
         - dynamodb:Scan
         - dynamodb:PutItem
+        - dynamodb:DeleteItem
       Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.DYNAMO_TABLE}"
     - Effect: "Allow"
       Action:

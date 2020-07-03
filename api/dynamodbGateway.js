@@ -80,6 +80,29 @@ module.exports.addRecipe = (recipe) => {
   });
 }
 
+module.exports.deleteRecipe = (name) => {
+  const params = {
+    TableName: process.env.DYNAMO_TABLE,
+    Key: {
+      'Name': name,
+      'Category': 'RECIPE'
+    },
+  };
+  console.log("deleting recipe from db with params", params)
+  return new Promise((resolve, reject) => {
+    database
+      .delete(params, function(err) {
+        if (err) {
+          console.log(`There was an error deleting this recipe from db`, err);
+          return reject(err);
+        }
+        console.log("Recipes successfully deleted")
+        return resolve(name);
+      }
+    );
+  })
+};
+
 module.exports.getStoredValues = () => {
   const params = {
     TableName: process.env.DYNAMO_TABLE,

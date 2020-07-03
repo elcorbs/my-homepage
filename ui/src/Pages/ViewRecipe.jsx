@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { getRecipe, editRecipe } from "../Gateway/query-api";
+import { getRecipe, editRecipe, removeRecipe } from "../Gateway/query-api";
 import BreadcrumbNavigator from "../Components/BreadcrumbNavigator";
-import { EditOutlined } from "@ant-design/icons";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import RecipeFormModal from "../Components/RecipeFormModal";
-import {Button} from "antd";
+import {Button, Modal} from "antd";
+import { Redirect } from "react-router-dom";
 
 export default function ViewRecipe(props) {
   const [recipe, setRecipe] = useState(null);
   const [editting, setEditting] = useState(false);
+  const [deleted, markAsDeleted] = useState(false);
 
   useEffect(() => {
     getRecipe(props.match.params.name, setRecipe)
@@ -21,6 +23,17 @@ export default function ViewRecipe(props) {
   }
   const closeModal = () => setEditting(false);
 
+  const openDeleteModal = () => {
+    Modal.confirm({
+     title: `Confirm delete`,
+     content: `Are you sure you want to delete the recipe for ${recipe.name}?`,
+     onOk: () => removeRecipe(recipe.name, () => markAsDeleted(true)),
+     okText: "Delete",
+     okButtonProps: {type: "danger"},
+    })
+  }
+  if (deleted) return <Redirect to="/recipes" />;
+
   return (
     <div>
       <BreadcrumbNavigator recipeName={recipe.name.toLowerCase()} />
@@ -33,7 +46,9 @@ export default function ViewRecipe(props) {
         />
       }
       <h2>
-        {recipe.name} <Button style={{border: "none", backgroundColor: "transparent"}} onClick={openEdit}><EditOutlined /></Button>
+        {recipe.name} 
+        <Button style={{border: "none", backgroundColor: "transparent"}} onClick={openEdit}><EditOutlined /></Button> 
+        <Button style={{border: "none", backgroundColor: "transparent"}} onClick={openDeleteModal}><DeleteOutlined style={{color: "red"}}/></Button> 
       </h2>
       <p style={{ fontStyle: "italic", color: "rgb(0,0,0,0.47)" }}>
         {recipe.type} <br />

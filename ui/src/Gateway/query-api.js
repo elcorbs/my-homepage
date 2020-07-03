@@ -12,13 +12,18 @@ export async function getRecipe(name, callback){
 export async function addRecipe(recipe, callback){
   const recipeStringLiteral = mapRecipeToQueryStringLiteral(recipe);
   const schema = `mutation {addRecipe(input: ${recipeStringLiteral} ){name, cuisine}}`;
-  await queryApi(schema, data => callback(data.addRecipe), 'POST')
+  await queryApi(schema, data => callback(data.addRecipe))
 }
 
 export async function editRecipe(recipe, callback){
   const recipeStringLiteral = mapRecipeToQueryStringLiteral(recipe);
   const schema = `mutation {addRecipe(input: ${recipeStringLiteral} ){name, cuisine, type, recipeLink, servings, notes, ingredients{name, amount, measurement}, method}}`;
-  await queryApi(schema, data => callback(data.addRecipe), 'POST')
+  await queryApi(schema, data => callback(data.addRecipe))
+}
+
+export async function removeRecipe(name, callback){
+  const schema = `mutation {removeRecipe(name: "${name}")}`;
+  await queryApi(schema, callback)
 }
 
 export async function getStoredIngredients(callback){

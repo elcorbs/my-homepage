@@ -7,6 +7,7 @@ module.exports.schema =
     }
     type Mutation {
       addRecipe(input: RecipeInput): Recipe
+      removeRecipe(name: String): String
     }
     enum MealType {
       Breakfast

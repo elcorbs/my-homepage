@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
-import RecipesList from "./Pages/RecipesList"
+import RecipesPage from "./Pages/RecipesPage"
 import ViewRecipe from "./Pages/ViewRecipe";
 import { createBrowserHistory } from "history";
 import { Layout } from "antd"
@@ -20,7 +20,7 @@ function App() {
               <Route exact path="/">
                 <Redirect to="/recipes" />
               </Route>
-              <Route exact path="/recipes" component={RecipesList} />
+              <Route exact path="/recipes" component={RecipesPage} />
               <Route exact path="/recipes/:name" component={ViewRecipe} />
             </Router>
         </div>

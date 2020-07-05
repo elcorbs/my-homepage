@@ -35,7 +35,7 @@ function mapRecipeToQueryStringLiteral(recipe){
   return `{
     name: "${recipe.name}",
     ${getKeyValue(recipe, "cuisine")}
-    ${getKeyValue(recipe, "servings")}
+    ${recipe.servings ? `servings: ${recipe.servings},` : ""}
     ${recipe.ingredients
       ? `ingredients: [${recipe.ingredients.map(i => 
        `{name: "${i.name}"

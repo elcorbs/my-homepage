@@ -51,10 +51,9 @@ export default function ViewRecipe(props) {
         <Button style={{border: "none", backgroundColor: "transparent"}} onClick={openDeleteModal}><DeleteOutlined style={{color: "red"}}/></Button> 
       </h2>
       <p style={{ fontStyle: "italic", color: "rgb(0,0,0,0.47)" }}>
-        {recipe.type} <br />
-        {recipe.servings ? `serves ${recipe.servings}` : ""}
+        {recipe.type}, {recipe.servings ? `serves ${recipe.servings}` : ""}
       </p>
-      {recipe.recipeLink ? <a href={recipe.recipeLink} target="_blank"> Link to recipe here</a> : null}
+      {recipe.recipeLink ? <a href={recipe.recipeLink} target="_blank" rel="noopener noreferrer"> Link to recipe here</a> : null}
       {recipe.ingredients ? <ul>
         {recipe.ingredients.map(i => <li key={i.name}>{i.amount} {i.measurement} {i.name} </li>)}
       </ul> : null}

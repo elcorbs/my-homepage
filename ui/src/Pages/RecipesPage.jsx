@@ -6,6 +6,7 @@ import RecipeList from "../Components/RecipeList";
 import FilterPanel from "../Components/FilterRecipesPanel";
 import { Layout } from "antd";
 import { getCuisinesFromRecipes } from "../Utilities/helper-functions";
+import "./recipesPage.scss";
 
 export default function RecipesPage() {
   const [recipes, setRecipes] = useState([]);
@@ -39,8 +40,10 @@ export default function RecipesPage() {
 
   return (
     <div>
+      <div className="breadcrumb-container">
       <BreadcrumbNavigator />
-      <Layout>
+      </div>
+      <Layout style={{flexWrap: "wrap"}}>
         <FilterPanel openRecipeForm={openForm} recipes={recipes} filterIngredients={filterIngredients} />
         {recipeFormVisible && (
           <RecipeFormModal

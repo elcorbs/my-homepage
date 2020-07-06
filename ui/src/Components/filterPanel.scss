@@ -1,0 +1,25 @@
+
+.panel {
+  background-color: #f0f2f5 !important;
+}
+
+@media screen and (min-width:320px) and (max-width:640px) {
+  .panel {
+    min-width: 100% !important;
+    position: sticky !important;
+    padding-top: 4px;
+    top: 39px;
+  }
+}
+
+@media screen and (min-width:641px) {
+  .panel {
+    border-right: 1px solid #e0e2e5;
+    overflow: auto;
+    height: 100vh;
+    left: 0;
+    position: sticky !important;
+    top: 0;
+    padding-top: 20px;
+  }
+}

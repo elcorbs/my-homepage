@@ -1,4 +1,8 @@
 @import '~antd/dist/antd.css';
+@viewport {
+  width: device-width ;
+  zoom: 1.0 ;
+}
 
 .App {
   text-align: center;

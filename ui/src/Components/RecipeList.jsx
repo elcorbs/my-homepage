@@ -16,8 +16,8 @@ export default function RecipeList({ recipes }) {
         minHeight: 280,
 
       }}>
-     <div className="pinIcon">
-       <PushpinOutlined />
+     <div className="pinnedRecipesContainer">
+       <PushpinOutlined className="pinIcon"/>
        <ul>
          {recipes.filter(r => r.pinned).map(r => <RecipeListItem recipe={r} />)}
        </ul>

@@ -64,6 +64,7 @@ module.exports.addRecipe = (recipe) => {
   if (recipe.Type) { params.Item["Type"] = recipe.Type}
   if (recipe.Notes) { params.Item["Notes"] = recipe.Notes }
   if (recipe.RecipeLink) { params.Item["RecipeLink"] = recipe.RecipeLink }
+  if (recipe.WantToTry) { params.Item["WantToTry"] = recipe.WantToTry }
 
   console.log("Adding to db with params", params)
   return new Promise((resolve, reject) => {
@@ -102,6 +103,30 @@ module.exports.deleteRecipe = (name) => {
     );
   })
 };
+
+module.exports.toggleValue = (name, field, flag) => {
+  const params = {
+    TableName: process.env.DYNAMO_TABLE,
+    Key: {
+      'Name': name,
+      'Category': 'RECIPE'
+    },
+    UpdateExpression: 'set #k = :v',
+    ExpressionAttributeNames: {'#k' : field},
+    ExpressionAttributeValues: {':v' : flag}
+  }
+  console.log("updating recipe with params", params)
+  return new Promise((resolve, reject) => {
+    database.update(params, function(err) {
+      if(err) {
+        console.log("There was an error updatign the recipe", err)
+        return reject(err);
+      }
+      console.log("Recipe updated successfully")
+      return resolve(flag);
+    })
+  })
+}
 
 module.exports.getStoredValues = () => {
   const params = {

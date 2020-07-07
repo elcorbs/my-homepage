@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { getRecipe, editRecipe, removeRecipe } from "../Gateway/query-api";
+import { getRecipe, editRecipe, removeRecipe, toggleWantToTry, togglePinned } from "../Gateway/query-api";
 import BreadcrumbNavigator from "../Components/BreadcrumbNavigator";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { EditOutlined, DeleteOutlined, StarFilled, StarOutlined, PushpinFilled, PushpinOutlined } from "@ant-design/icons";
 import RecipeFormModal from "../Components/RecipeFormModal";
-import {Button, Modal} from "antd";
+import { Modal} from "antd";
 import { Redirect } from "react-router-dom";
+import "./viewRecipePage.scss"
+import IconButton from "../Components/IconButton";
 
 export default function ViewRecipe(props) {
   const [recipe, setRecipe] = useState(null);
@@ -23,6 +25,22 @@ export default function ViewRecipe(props) {
   }
   const closeModal = () => setEditting(false);
 
+  const updateToggle = (value, key) => {
+    setRecipe(recipe => {
+      const updatedRecipe = {...recipe};
+      updatedRecipe[key] = value;
+      return updatedRecipe;
+    })
+  }
+
+  const toggleWantToTryFlag = () => {
+    toggleWantToTry(recipe.name, !recipe.wantToTry, updateToggle);
+  }
+
+  const togglePinnedFlag = () => {
+    togglePinned(recipe.name, !recipe.pinned, updateToggle);
+  }
+
   const openDeleteModal = () => {
     Modal.confirm({
      title: `Confirm delete`,
@@ -37,7 +55,7 @@ export default function ViewRecipe(props) {
   return (
     <div>
       <BreadcrumbNavigator recipeName={recipe.name.toLowerCase()} />
-      { editting &&
+      {editting &&
         <RecipeFormModal
           closeModal={closeModal}
           submitForm={submitEdit}
@@ -46,9 +64,11 @@ export default function ViewRecipe(props) {
         />
       }
       <h2>
-        {recipe.name} 
-        <Button style={{border: "none", backgroundColor: "transparent"}} onClick={openEdit}><EditOutlined /></Button> 
-        <Button style={{border: "none", backgroundColor: "transparent"}} onClick={openDeleteModal}><DeleteOutlined style={{color: "red"}}/></Button> 
+        {recipe.name}
+        <IconButton color="#dbbc18" onClick={toggleWantToTryFlag} children={recipe.wantToTry ? <StarFilled /> : <StarOutlined />} />
+        <IconButton onClick={togglePinnedFlag} children={recipe.pinned ? <PushpinFilled /> : <PushpinOutlined />} />
+        <IconButton onClick={openEdit} children={<EditOutlined />} />
+        <IconButton onClick={openDeleteModal} children={<DeleteOutlined />} color="red" />  
       </h2>
       <p style={{ fontStyle: "italic", color: "rgb(0,0,0,0.47)" }}>
         {recipe.type}, {recipe.servings ? `serves ${recipe.servings}` : ""}

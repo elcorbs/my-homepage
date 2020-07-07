@@ -1,11 +1,11 @@
 
 export async function getRecipes(callback) {
-  const schema = `query {recipes{name, cuisine, ingredients{name, measurement}}}`;
+  const schema = `query {recipes{name, cuisine, wantToTry, pinned, ingredients{name, measurement}}}`;
   await queryApi(schema, data => callback(data.recipes))
 }
 
 export async function getRecipe(name, callback){
-  const schema = `query {recipe(name: "${name}"){name, cuisine, type, recipeLink, servings, notes, ingredients{name, amount, measurement}, method}}`;
+  const schema = `query {recipe(name: "${name}"){name, cuisine, type, recipeLink, wantToTry, pinned, servings, notes, ingredients{name, amount, measurement}, method}}`;
   await queryApi(schema, data => callback(data.recipe))
 }
 
@@ -29,6 +29,16 @@ export async function removeRecipe(name, callback){
 export async function getStoredIngredients(callback){
   const schema = `query {repeatableValues { measures, ingredients } }`;
   await queryApi(schema, data => callback(data.repeatableValues))
+}
+
+export async function toggleWantToTry(name, value, callback){
+  const schema = `mutation {toggleWantToTry(name: "${name}", flag: ${value})}`;
+  await queryApi(schema, data => callback(data.toggleWantToTry, "wantToTry"));
+}
+
+export async function togglePinned(name, value, callback){
+  const schema = `mutation {toggleEatingNext(name: "${name}", flag: ${value})}`;
+  await queryApi(schema, data => callback(data.toggleEatingNext, "pinned"));
 }
 
 function mapRecipeToQueryStringLiteral(recipe){

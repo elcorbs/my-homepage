@@ -33,7 +33,7 @@ export default function RecipesPage() {
 
   const filterIngredients = (ingredients) => {
     const filteredRecipes = recipes.filter(recipe =>
-      ingredients.reduce((total, currentValue) => total && recipe.ingredients.find(i => currentValue == i.name), true)
+      ingredients.reduce((total, currentValue) => total && recipe.ingredients.find(i => currentValue === i.name), true)
     );
     setFilteredRecipes(filteredRecipes);
   }

@@ -8,6 +8,8 @@ module.exports.schema =
     type Mutation {
       addRecipe(input: RecipeInput): Recipe
       removeRecipe(name: String): String
+      toggleWantToTry(name: String, flag: Boolean): Boolean
+      toggleEatingNext(name: String, flag: Boolean): Boolean
     }
     enum MealType {
       Breakfast
@@ -34,6 +36,8 @@ module.exports.schema =
       type: MealType
       notes: String
       recipeLink: String
+      wantToTry: Boolean
+      pinned: Boolean
     }
     type Ingredient {
       name: String
@@ -49,6 +53,8 @@ module.exports.schema =
       type: MealType
       notes: String
       recipeLink: String
+      wantToTry: Boolean
+      pinned: Boolean
     }
     input IngredientInput {
       name: String

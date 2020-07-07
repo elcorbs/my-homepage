@@ -11,7 +11,7 @@ export async function getRecipe(name, callback){
 
 export async function addRecipe(recipe, callback){
   const recipeStringLiteral = mapRecipeToQueryStringLiteral(recipe);
-  const schema = `mutation {addRecipe(input: ${recipeStringLiteral} ){name, cuisine}}`;
+  const schema = `mutation {addRecipe(input: ${recipeStringLiteral} ){name, cuisine, ingredients{name, measurement}}}`;
   await queryApi(schema, data => callback(data.addRecipe))
 }
 

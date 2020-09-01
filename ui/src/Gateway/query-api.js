@@ -1,3 +1,4 @@
+import { getToken, isLoggedIn } from "../Utilities/helper-functions";
 
 export async function getRecipes(callback) {
   const schema = `query {recipes{name, cuisine, wantToTry, pinned, ingredients{name, measurement}}}`;
@@ -41,6 +42,16 @@ export async function togglePinned(name, value, callback){
   await queryApi(schema, data => callback(data.toggleEatingNext, "pinned"));
 }
 
+export async function login(name, password, callback){
+  const schema = `mutation {login(username: "${name}", password: "${password}"){ token, user{ name, admin }}}`
+  await queryApi(schema, data => {
+    if (data.login) localStorage.setItem('emmas-recipes-token', data.login.token)
+    if (data.login) localStorage.setItem('emmas-recipes-username', data.login.user.name)
+    if (data.login) localStorage.setItem('emmas-recipes-admin', data.login.user.admin)
+    callback(data.login)
+  })
+}
+
 function mapRecipeToQueryStringLiteral(recipe){
   return `{
     name: "${recipe.name}",
@@ -66,13 +77,16 @@ async function queryApi(query, callback) {
   const apiUrl = "https://6lac5t2w1i.execute-api.eu-west-2.amazonaws.com/production/query"
 
   let url = new URL(apiUrl);
-  const response = await fetch(url, {
+  const request = {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
     },
     body: query
-  })
+  }
+  if(isLoggedIn()) request.headers['Authorization'] = `Bearer ${getToken()}`;
+
+  const response = await fetch(url, request);
   const data = await response.json();
 
   callback(data.data);

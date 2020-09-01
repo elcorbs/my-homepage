@@ -9,7 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "antd": "^4.3.5",
     "serverless-finch": "^2.5.2"
   }
 }

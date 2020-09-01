@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Layout } from "antd";
-import { getCuisinesFromRecipes } from "../Utilities/helper-functions";
+import { getCuisinesFromRecipes, getUsername } from "../Utilities/helper-functions";
 import { StarFilled, PushpinOutlined } from "@ant-design/icons"
 import "./styles.scss";
 const { Content } = Layout;
@@ -16,18 +16,13 @@ export default function RecipeList({ recipes }) {
         minHeight: 280,
 
       }}>
-     <div className="pinnedRecipesContainer">
-       <PushpinOutlined className="pinIcon"/>
-       <ul>
-         {recipes.filter(r => r.pinned).map(r => <RecipeListItem recipe={r} />)}
-       </ul>
-     </div>
+      {getUsername() === "emma" && <PinnedRecipes recipes={recipes} />}
       {cuisines.map(cuisine => {
         return (
           <div key={cuisine}>
             <h2> {cuisine} </h2>
             <ul>
-              {recipes.filter(r => r.cuisine === cuisine).map(recipe => <RecipeListItem recipe={recipe} />)}
+              {recipes.filter(r => r.cuisine === cuisine).map(recipe => <RecipeListItem key={recipe.name} recipe={recipe} />)}
             </ul>
           </div>
         )
@@ -35,12 +30,24 @@ export default function RecipeList({ recipes }) {
     </Content>
   )
 }
+function PinnedRecipes({ recipes }) {
+  const pinnedRecipes = recipes.filter(r => r.pinned);
+  if (pinnedRecipes.length === 0) return null;
+  return (
+    <div className="pinnedRecipesContainer">
+      <PushpinOutlined className="pinIcon" />
+      <ul>
+        {pinnedRecipes.map(r => <RecipeListItem recipe={r} />)}
+      </ul>
+    </div>
+  )
+}
 
-function RecipeListItem({recipe}) {
+function RecipeListItem({ recipe }) {
   return (
     <li key={recipe.name}>
       <Link to={`/recipes/${recipe.name}`}>{recipe.name}</Link>
-      {recipe.wantToTry ? <StarFilled style={{color: "#dbbc18", marginLeft: "5px" }} /> : null}
+      {recipe.wantToTry && getUsername() === "emma" ? <StarFilled style={{ color: "#dbbc18", marginLeft: "5px" }} /> : null}
     </li>
   )
 }

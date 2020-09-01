@@ -9,6 +9,7 @@ provider:
   name: aws
   environment:
     DYNAMO_TABLE: ${self:service}-storage
+    APP_SECRET: ${ssm:/${self:service}-api/APP_SECRET}
     REACT_APP_API_URL: https://6lac5t2w1i.execute-api.eu-west-2.amazonaws.com/production/query
   runtime: nodejs12.x
   iamRoleStatements:

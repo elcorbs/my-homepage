@@ -3,6 +3,20 @@
   background-color: #f0f2f5 !important;
 }
 
+.login-form-item {
+  margin: 3px;
+}
+
+.login-form-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-panel-container {
+  display: flex;
+  flex-direction: column;
+}
+
 @media screen and (min-width:320px) and (max-width:640px) {
   .panel {
     min-width: 100% !important;

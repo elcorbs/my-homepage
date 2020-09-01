@@ -1,6 +1,6 @@
 const { DynamoDB, config } = require('aws-sdk');
 
-config.update({region: 'eu-west-2'});
+config.update({ region: 'eu-west-2' });
 const database = new DynamoDB.DocumentClient({
   apiVersion: '2012-08-10',
 });
@@ -15,15 +15,41 @@ module.exports.getRecipes = () => {
   };
   return new Promise((resolve, reject) => {
     database
-      .query(params, function(err, data) {
+      .query(params, function (err, data) {
         if (err) {
           console.log(`There was an error fetching the data`, err);
           return reject(err);
-        }    
+        }
         return resolve(data.Items);
       }
-    );
+      );
   });
+}
+
+module.exports.getUser = (email) => {
+  const params = {
+    TableName: process.env.DYNAMO_TABLE,
+    Key: {
+      'Name': email,
+      'Category': 'USER'
+    }
+  }
+
+  console.log("contacting db")
+  return new Promise((resolve, reject) => {
+    database
+      .get(params, function (err, data) {
+        console.log("received data", data)
+        console.log("received error", err)
+        if (err) {
+          console.log(`There was an error fetching the user from the database`, err);
+          return reject(err);
+        }
+        if (!data.Item) return resolve(null);
+
+        return resolve({name: data.Item.Name, password: data.Item.Password, adminAccess: data.Item.AdminAccess});
+      })
+  })
 }
 
 module.exports.getRecipeByName = (name) => {
@@ -37,14 +63,14 @@ module.exports.getRecipeByName = (name) => {
 
   return new Promise((resolve, reject) => {
     database
-      .get(params, function(err, data) {
+      .get(params, function (err, data) {
         if (err) {
           console.log(`There was an error fetching the data for ${params.Key.id}`, err);
           return reject(err);
-        }    
+        }
         return resolve(data.Item);
       }
-    );
+      );
   });
 };
 
@@ -52,8 +78,8 @@ module.exports.addRecipe = (recipe) => {
   const params = {
     TableName: process.env.DYNAMO_TABLE,
     Item: {
-      "Name" : recipe.Name,
-      "Category" : 'RECIPE'
+      "Name": recipe.Name,
+      "Category": 'RECIPE'
     }
   };
   console.log("Trying to add recipe to the db", recipe)
@@ -61,7 +87,7 @@ module.exports.addRecipe = (recipe) => {
   if (recipe.Method) { params.Item["Method"] = recipe.Method }
   if (recipe.Cuisine) { params.Item["Cuisine"] = recipe.Cuisine }
   if (recipe.Servings) { params.Item["Servings"] = recipe.Servings }
-  if (recipe.Type) { params.Item["Type"] = recipe.Type}
+  if (recipe.Type) { params.Item["Type"] = recipe.Type }
   if (recipe.Notes) { params.Item["Notes"] = recipe.Notes }
   if (recipe.RecipeLink) { params.Item["RecipeLink"] = recipe.RecipeLink }
   if (recipe.WantToTry) { params.Item["WantToTry"] = recipe.WantToTry }
@@ -69,7 +95,7 @@ module.exports.addRecipe = (recipe) => {
   console.log("Adding to db with params", params)
   return new Promise((resolve, reject) => {
     database
-      .put(params, function(err) {
+      .put(params, function (err) {
         if (err) {
           console.log(`There was an error writing the recipe to the db`, err);
           return reject(err);
@@ -77,7 +103,33 @@ module.exports.addRecipe = (recipe) => {
         console.log("Recipes successfully added")
         return resolve(recipe);
       }
-    );
+      );
+  });
+}
+
+module.exports.addUser = (user, password) => {
+  const params = {
+    TableName: process.env.DYNAMO_TABLE,
+    Item: {
+      "Name": user,
+      "Category": 'USER',
+      "Password": password,
+      "AdminAccess": false,
+    }
+  };
+  console.log("Trying to add User to the db", user)
+  console.log("Adding to db with params", params)
+  return new Promise((resolve, reject) => {
+    database
+      .put(params, function (err) {
+        if (err) {
+          console.log(`There was an error writing the user to the db`, err);
+          return reject(err);
+        }
+        console.log("User successfully added");
+        return resolve(user);
+      }
+      );
   });
 }
 
@@ -92,7 +144,7 @@ module.exports.deleteRecipe = (name) => {
   console.log("deleting recipe from db with params", params)
   return new Promise((resolve, reject) => {
     database
-      .delete(params, function(err) {
+      .delete(params, function (err) {
         if (err) {
           console.log(`There was an error deleting this recipe from db`, err);
           return reject(err);
@@ -100,7 +152,7 @@ module.exports.deleteRecipe = (name) => {
         console.log("Recipes successfully deleted")
         return resolve(name);
       }
-    );
+      );
   })
 };
 
@@ -112,13 +164,13 @@ module.exports.toggleValue = (name, field, flag) => {
       'Category': 'RECIPE'
     },
     UpdateExpression: 'set #k = :v',
-    ExpressionAttributeNames: {'#k' : field},
-    ExpressionAttributeValues: {':v' : flag}
+    ExpressionAttributeNames: { '#k': field },
+    ExpressionAttributeValues: { ':v': flag }
   }
   console.log("updating recipe with params", params)
   return new Promise((resolve, reject) => {
-    database.update(params, function(err) {
-      if(err) {
+    database.update(params, function (err) {
+      if (err) {
         console.log("There was an error updatign the recipe", err)
         return reject(err);
       }
@@ -135,7 +187,7 @@ module.exports.getStoredValues = () => {
   };
 
   return new Promise((resolve, reject) => {
-    database.scan(params, function(err, data) {
+    database.scan(params, function (err, data) {
       if (err) {
         console.log(`There was an error scanning the DB`, err)
         return reject(err);

@@ -10,6 +10,17 @@ module.exports.schema =
       removeRecipe(name: String): String
       toggleWantToTry(name: String, flag: Boolean): Boolean
       toggleEatingNext(name: String, flag: Boolean): Boolean
+      login(username: String!, password: String!): AuthPayload
+      signup(username: String!, password: String!): AuthPayload
+    }
+    type AuthPayload {
+      token: String
+      user: User
+    }
+    type User {
+      name: String!
+      admin: Boolean
+      email: String
     }
     enum MealType {
       Breakfast

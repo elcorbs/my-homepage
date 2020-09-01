@@ -3,10 +3,11 @@ import { getRecipe, editRecipe, removeRecipe, toggleWantToTry, togglePinned } fr
 import BreadcrumbNavigator from "../Components/BreadcrumbNavigator";
 import { EditOutlined, DeleteOutlined, StarFilled, StarOutlined, PushpinFilled, PushpinOutlined } from "@ant-design/icons";
 import RecipeFormModal from "../Components/RecipeFormModal";
-import { Modal} from "antd";
+import { Modal } from "antd";
 import { Redirect } from "react-router-dom";
 import "./viewRecipePage.scss"
 import IconButton from "../Components/IconButton";
+import { getUsername, isAdmin } from "../Utilities/helper-functions";
 
 export default function ViewRecipe(props) {
   const [recipe, setRecipe] = useState(null);
@@ -27,7 +28,7 @@ export default function ViewRecipe(props) {
 
   const updateToggle = (value, key) => {
     setRecipe(recipe => {
-      const updatedRecipe = {...recipe};
+      const updatedRecipe = { ...recipe };
       updatedRecipe[key] = value;
       return updatedRecipe;
     })
@@ -43,11 +44,11 @@ export default function ViewRecipe(props) {
 
   const openDeleteModal = () => {
     Modal.confirm({
-     title: `Confirm delete`,
-     content: `Are you sure you want to delete the recipe for ${recipe.name}?`,
-     onOk: () => removeRecipe(recipe.name, () => markAsDeleted(true)),
-     okText: "Delete",
-     okButtonProps: {type: "danger"},
+      title: `Confirm delete`,
+      content: `Are you sure you want to delete the recipe for ${recipe.name}?`,
+      onOk: () => removeRecipe(recipe.name, () => markAsDeleted(true)),
+      okText: "Delete",
+      okButtonProps: { type: "danger" },
     })
   }
   if (deleted) return <Redirect to="/recipes" />;
@@ -65,10 +66,10 @@ export default function ViewRecipe(props) {
       }
       <h2>
         {recipe.name}
-        <IconButton color="#dbbc18" onClick={toggleWantToTryFlag} children={recipe.wantToTry ? <StarFilled /> : <StarOutlined />} />
-        <IconButton onClick={togglePinnedFlag} children={recipe.pinned ? <PushpinFilled /> : <PushpinOutlined />} />
-        <IconButton onClick={openEdit} children={<EditOutlined />} />
-        <IconButton onClick={openDeleteModal} children={<DeleteOutlined />} color="red" />  
+        {getUsername() === "emma" && <IconButton color="#dbbc18" onClick={toggleWantToTryFlag} children={recipe.wantToTry ? <StarFilled /> : <StarOutlined />} />}
+        {getUsername() === "emma" && <IconButton onClick={togglePinnedFlag} children={recipe.pinned ? <PushpinFilled /> : <PushpinOutlined />} />}
+        {isAdmin() && <IconButton onClick={openEdit} children={<EditOutlined />} />}
+        {isAdmin() && <IconButton onClick={openDeleteModal} children={<DeleteOutlined />} color="red" />}
       </h2>
       <p style={{ fontStyle: "italic", color: "rgb(0,0,0,0.47)" }}>
         {recipe.type}, {recipe.servings ? `serves ${recipe.servings}` : ""}
@@ -81,10 +82,10 @@ export default function ViewRecipe(props) {
         {recipe.method.map((m, index) => <li key={index}>{splitTextIntoHtmlLines(m)}</li>)}
       </ol> : null}
       <p>
-      {splitTextIntoHtmlLines(recipe.notes)}
+        {splitTextIntoHtmlLines(recipe.notes)}
       </p>
     </div>
   )
 }
 
-const splitTextIntoHtmlLines = (text) => text ? text.split("\n").map(l => <>{l}<br /></>): null;
+const splitTextIntoHtmlLines = (text) => text ? text.split("\n").map(l => <>{l}<br /></>) : null;

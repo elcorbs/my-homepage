@@ -2,7 +2,7 @@ import React from "react";
 import { Modal, Form, Input, Button, InputNumber, Switch } from "antd"
 import SelectorWithAdd from "./FormItems/SelectorWithAdd";
 import "./recipeForm.scss";
-import MealTypeDropdown from "./FormItems/MealTypeDropdown";
+import MealTypeFormItem from "./FormItems/MealTypeDropdown";
 import IngredientsList from "./FormItems/IngredientsList";
 import Method from "./FormItems/Method";
 import { useState, useEffect } from "react";
@@ -53,7 +53,7 @@ export default function RecipeFormModal({ closeModal, submitForm, cuisines, reci
         >
           <Input disabled={recipe ? true : false} />
         </Form.Item>
-        <MealTypeDropdown />
+        <MealTypeFormItem />
         <SelectorWithAdd
           options={cuisines}
           placeholder={""}

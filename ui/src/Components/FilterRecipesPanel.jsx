@@ -5,11 +5,24 @@ import { getIngredientsFromRecipes, isAdmin } from "../Utilities/helper-function
 import { login } from "../Gateway/query-api";
 import "./filterPanel.scss";
 import { useState } from "react";
+import { MealTypeDropdown } from "../Components/FormItems/MealTypeDropdown";
 const { Sider } = Layout;
 const { Option } = Select;
 
-export default function FilterPanel({ openRecipeForm, recipes, filterIngredients }) {
+export default function FilterPanel({ openRecipeForm, recipes, filter }) {
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem('emmas-recipes-token') != null);
+  const [ingredientsFilter, setIngredientsFilter] = useState([]);
+  const [mealTypeFilter, setMealTypeFilter] = useState(null);
+
+  const filterMealType = (mealType) => {
+    console.log("meal type filter", mealType)
+    filter(ingredientsFilter, mealType);
+    setMealTypeFilter(mealType)
+  }
+  const filterIngredients = (ingredients) => {
+    filter(ingredients, mealTypeFilter);
+    setIngredientsFilter(ingredients);
+  }
 
   return (
     <>
@@ -20,10 +33,12 @@ export default function FilterPanel({ openRecipeForm, recipes, filterIngredients
         {!loggedIn && <LoginForm setLoggedIn={setLoggedIn} />}
         {isAdmin() && <NewRecipeButton openForm={openRecipeForm} />}
         <div className="filter-panel-container">
-          <p style={{ marginBottom: "0px", margin: "3px" }}>Ingredients</p>
-          <Select mode="multiple" style={{ margin: "3px" }} onChange={filterIngredients}>
+          <Select mode="multiple" onChange={filterIngredients} placeholder="Filter by ingredients">
             {getIngredientsFromRecipes(recipes).map(ingredient => <Option key={ingredient} value={ingredient}>{ingredient}</Option>)}
           </Select>
+        </div>
+        <div className="filter-panel-container">
+          <MealTypeDropdown onChange={filterMealType} allowClear />
         </div>
       </Sider>
     </>
@@ -35,8 +50,6 @@ function LoginForm({ setLoggedIn }) {
   const [password, setPassword] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
 
-  console.log(username)
-  console.log(password)
   const submitLoginForm = () => {
     setErrorMessage(null);
     login(username, password, (user) => user ? setLoggedIn(true) : userNotFound())

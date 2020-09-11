@@ -31,10 +31,12 @@ export default function RecipesPage() {
     addRecipe(values, recipeAdded)
   }
 
-  const filterIngredients = (ingredients) => {
-    const filteredRecipes = recipes.filter(recipe =>
-      ingredients.reduce((total, currentValue) => total && recipe.ingredients.find(i => currentValue === i.name), true)
-    );
+  const filter = (ingredients, mealType) => {
+    const filteredRecipes = recipes.filter(recipe => {
+      const matchedMealType = (!mealType || recipe.type === mealType);
+      const matchedIngredients = (ingredients.length === 0 || ingredients.reduce((total, currentValue) => total && recipe.ingredients.find(i => currentValue === i.name), true));
+      return matchedIngredients && matchedMealType;
+    });
     setFilteredRecipes(filteredRecipes);
   }
 
@@ -44,7 +46,11 @@ export default function RecipesPage() {
       <BreadcrumbNavigator />
       </div>
       <Layout style={{flexWrap: "wrap"}}>
-        <FilterPanel openRecipeForm={openForm} recipes={recipes} filterIngredients={filterIngredients} />
+        <FilterPanel
+          openRecipeForm={openForm}
+          recipes={recipes}
+          filter={filter}
+        />
         {recipeFormVisible && (
           <RecipeFormModal
             closeModal={closeForm}

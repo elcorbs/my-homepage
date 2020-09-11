@@ -1,7 +1,7 @@
 import { getToken, isLoggedIn } from "../Utilities/helper-functions";
 
 export async function getRecipes(callback) {
-  const schema = `query {recipes{name, cuisine, wantToTry, pinned, ingredients{name, measurement}}}`;
+  const schema = `query {recipes{name, cuisine, wantToTry, type, pinned, ingredients{name, measurement}}}`;
   await queryApi(schema, data => callback(data.recipes))
 }
 

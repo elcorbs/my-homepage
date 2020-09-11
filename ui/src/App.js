@@ -4,14 +4,13 @@ import RecipesPage from "./Pages/RecipesPage"
 import ViewRecipe from "./Pages/ViewRecipe";
 import { createBrowserHistory } from "history";
 import { Layout } from "antd"
-import "./styles.scss";
-import 'antd/dist/antd.css';
+import './App.less'
 const {Header, Content} = Layout;
 const history = createBrowserHistory();
 function App() {
   return (
     <Layout className="layout">
-      <Header>
+      <Header style={{background: "#210029"}}>
         <h1 style={{color: "white"}}>My Recipes</h1>
       </Header>
       <Content style={{padding: '0 50px'}}>

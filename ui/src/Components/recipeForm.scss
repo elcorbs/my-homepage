@@ -1,8 +1,3 @@
-.listInput {
-  & .ant-col-16 {
-    max-width: 100%;
-  }
-}
 
 .addSelection {
   background-color: transparent;
@@ -57,4 +52,59 @@
 
 .switch {
   display: flex;
+}
+
+@media screen and (min-width:320px) and (max-width:640px) {
+  & .ant-input-number {
+    width: 100% !important;
+  }
+  .list-input {
+    & .ant-space-item {
+      margin-right: 1px !important;
+      flex: 1 1 100px;
+      min-width: 100px;
+    }
+
+    & .ant-space-item:first-child {
+      margin-right: 1px !important;
+      flex: 0 0 50px;
+      min-width: 50px;
+    }
+
+    & .ant-space-item:last-child {
+      flex: 0 0 14px;
+      min-width: 14px;
+    }
+  }
+}
+
+@media screen and (min-width:641px) {
+  .measure-selector {
+    width: 200px
+  }
+  
+  .ingredient-selector {
+    width: 200px
+  }
+
+  .list-input {
+    & .ant-col-16 {
+      max-width: 100% !important;
+    }
+
+    & .ant-space-item {
+      flex: 1 1 100px;
+      min-width: 100px;
+    }
+ 
+    & .ant-space-item:first-child {
+      flex: 1 0 50px;
+      min-width: 50px;
+      max-width: 90px;
+    }
+ 
+    & .ant-space-item:last-child {
+      flex: 0 0 14px;
+    }
+  }
 }

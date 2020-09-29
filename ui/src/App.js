@@ -5,15 +5,16 @@ import ViewRecipe from "./Pages/ViewRecipe";
 import { createBrowserHistory } from "history";
 import { Layout } from "antd"
 import './App.less'
+import "./styles.scss";
 const {Header, Content} = Layout;
 const history = createBrowserHistory();
 function App() {
   return (
     <Layout className="layout">
-      <Header style={{background: "#210029"}}>
+      <Header style={{background: "#002329"}}>
         <h1 style={{color: "white"}}>My Recipes</h1>
       </Header>
-      <Content style={{padding: '0 50px'}}>
+      <Content className="main-content" >
         <div className="site-layout-content">
             <Router history={history}>
               <Route exact path="/">

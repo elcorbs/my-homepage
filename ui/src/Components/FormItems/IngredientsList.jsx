@@ -10,30 +10,31 @@ export default function IngredientsList({ measures, ingredients }) {
         return (
           <div>
             {fields.map(field => (
-              <Space key={field.key} style={{ display: 'flex', marginBottom: 3 }} align="start">
+              <Space className="list-input" key={field.key} style={{ display: 'flex', marginBottom: 3 }} align="start">
                 <Form.Item
                   {...field}
-                  className={"listInput"}
+                  className="small-ingredient-item"
                   name={[field.name, 'amount']}
                   fieldKey={[field.fieldKey, 'amount']}
                 >
-                  <InputNumber min={0} step={0.01} placeholder="Amount" />
+                  <InputNumber min={0} step={0.01} placeholder="#" />
                 </Form.Item>
                 <SelectorWithAdd
+                  className="large-ingredient-item"
                   options={measures}
                   placeholder={"Measure"}
-                  width={200}
+                  selectorClassName = "measure-selector"
                   formProps={{
                     ...field,
                     name: [field.name, "measurement"],
                     fieldKey: [field.fieldKey, "measurement"]
                   }}
-                  className={"listInput"}
                 />
                 <SelectorWithAdd
+                  className="large-ingredient-item"
                   options={ingredients}
                   placeholder={"Ingredient"}
-                  width={200}
+                  selectorClassName = "ingredient-selector"
                   formProps={{
                     ...field,
                     name: [field.name, "name"],
@@ -42,7 +43,7 @@ export default function IngredientsList({ measures, ingredients }) {
                   }}
                 />
                 <MinusCircleOutlined
-                  onClick={() => remove(field.name)}
+                  onClick={() => remove(field.name)} className="ingredient-remove-icon"
                 />
               </Space>
             ))}

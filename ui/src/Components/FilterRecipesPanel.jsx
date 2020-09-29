@@ -32,11 +32,19 @@ export default function FilterPanel({ openRecipeForm, recipes, filter }) {
       >
         {!loggedIn && <LoginForm setLoggedIn={setLoggedIn} />}
         {isAdmin() && <NewRecipeButton openForm={openRecipeForm} />}
-        <div className="filter-panel-container">
-          <Select mode="multiple" onChange={filterIngredients} placeholder="Filter by ingredients">
-            {getIngredientsFromRecipes(recipes).map(ingredient => <Option key={ingredient} value={ingredient}>{ingredient}</Option>)}
-          </Select>
-        </div>
+        <div className="filter-panel-container" style={{overflow: 'scroll'}} >
+          <div id='ingredient-filter'>
+            <Select
+              mode="multiple"
+              style={{width: "100%"}}
+              onChange={filterIngredients}
+              placeholder="Filter by ingredients"
+              getPopupContainer={() => document.getElementById('ingredient-filter')}
+            >
+              {getIngredientsFromRecipes(recipes).map(ingredient => <Option key={ingredient} value={ingredient}>{ingredient}</Option>)}
+            </Select>
+          </div>
+        </div>        
         <div className="filter-panel-container">
           <MealTypeDropdown onChange={filterMealType} allowClear />
         </div>

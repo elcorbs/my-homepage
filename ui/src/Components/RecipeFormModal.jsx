@@ -34,6 +34,10 @@ export default function RecipeFormModal({ closeModal, submitForm, cuisines, reci
 
   return (
     <Modal
+      style={{
+        overflowY: "scroll",
+        overflowX: "hidden"
+      }}
       title={`${recipe ? "Edit" : "New"} Recipe`}
       visible={true}
       footer={null}
@@ -57,7 +61,6 @@ export default function RecipeFormModal({ closeModal, submitForm, cuisines, reci
         <SelectorWithAdd
           options={cuisines}
           placeholder={""}
-          width={400}
           formProps={{
             name: "cuisine",
             label: "Cuisine"

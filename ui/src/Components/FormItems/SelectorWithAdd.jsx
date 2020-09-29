@@ -3,7 +3,7 @@ import { Form, Select, Divider, Input } from "antd";
 import { PlusOutlined } from '@ant-design/icons';
 const {Option} = Select;
 
-export default function SelectorWithAdd({ options, placeholder, width, formProps }) {
+export default function SelectorWithAdd({ options, placeholder, formProps, selectorClassName }) {
   const [items, setItems] = useState(options);
   const [name, setName] = useState('');
 
@@ -24,7 +24,7 @@ export default function SelectorWithAdd({ options, placeholder, width, formProps
     <Form.Item {...formProps} >
       <Select
         showSearch
-        style={{ width }}
+        className={selectorClassName}
         placeholder={placeholder}
         optionFilterProp="children"
         onSearch={value => setName(value)}

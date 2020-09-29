@@ -1,0 +1,11 @@
+@media screen and (min-width:320px) and (max-width:640px) {
+  .main-content {
+    padding: 0px 11px;
+  }
+}
+
+@media screen and (min-width:641px) {
+  .main-content {
+    padding: 0px 50px;
+  }
+}

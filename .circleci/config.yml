@@ -30,6 +30,7 @@ workflows:
   deploy-production:
     jobs:
       - deploy:
+          context: aws
           filters:
             branches:
               only:

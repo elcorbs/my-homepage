@@ -1,5 +1,4 @@
 plugins:
-  - serverless-dynamodb-local
   - serverless-offline
   - serverless-finch
 service: my-homepage
@@ -39,7 +38,6 @@ package:
   exclude:
     - ui/**
     - api/node_modules/serverless-dynamodb-client/**
-    - api/node_modules/serverless-dynamodb-local/**
     - api/node_modules/serverless-offline/**
 functions:
   recipesAPI:
@@ -73,13 +71,10 @@ resources:
     uiBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: "emma-corbett.me.uk"    
+        BucketName: "emma-corbett.me.uk"
 custom:
-  dynamodb:
-    stages:
-      - dev
   client:
-    bucketName: "emma-corbett.me.uk" 
+    bucketName: "emma-corbett.me.uk"
     distributionFolder: ui/build
     indexDocument: index.html
     errorDocument: index.html

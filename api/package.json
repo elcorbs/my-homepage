@@ -22,7 +22,6 @@
   "devDependencies": {
     "apollo-server-lambda": "^2.15.0",
     "serverless-dynamodb-client": "0.0.2",
-    "serverless-dynamodb-local": "^0.2.39",
     "serverless-offline": "^6.4.0"
   }
 }

@@ -23,6 +23,12 @@ jobs:
           profile-name: personal
       - serverless/setup
       - run:
+          name: Install serverless offline
+          command: npm install serverless-offline --save-dev
+      - run:
+          name: Install serverless finch
+          command: npm install --save serverless-finch
+      - run:
           name: Deploy UI & API
           command: make deploy
 

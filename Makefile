@@ -10,8 +10,12 @@ deploy-ui:
 build-ui:
 	cd ui && npm install && npm run build
 
+.PHONY: build-api
+build-api:
+	cd api && npm install
+
 .PHONY: deploy
-deploy: deploy-api build-ui deploy-ui
+deploy: build-api build-ui deploy-api deploy-ui
  
 .PHONY: serve
 serve:

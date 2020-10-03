@@ -1,6 +1,7 @@
 version: 2.1
 orbs:
   node: circleci/node@3.0.0
+  aws-cli: circleci/aws-cli@1.0
   serverless: circleci/serverless-framework@1.0
  
 commands:
@@ -18,11 +19,12 @@ jobs:
     executor: serverless/default
     steps:
       - checkout
+      - aws-cli/setup:
+          profile-name: personal
       - serverless/setup
-      - configure-aws-account
       - run:
           name: Deploy UI & API
-          command: cd project && make deploy
+          command: make deploy
 
 workflows:
   deploy-production:

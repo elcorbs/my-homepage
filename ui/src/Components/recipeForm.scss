@@ -48,21 +48,37 @@
   padding-right: 7px;
 }
 
+.ingredient-container {
+  display: flex;
+  margin-bottom: 3;
+}
+
+
 @media screen and (min-width:320px) and (max-width:640px) {
   & .ant-input-number {
     width: 100% !important;
   }
+  .ingredient-container {
+    flex-wrap: wrap;
+    align-content: center;
+    display: flex;
+    margin-bottom: 3;
+  }
   .list-input {
     & .ant-space-item {
       margin-right: 1px !important;
-      flex: 1 1 100px;
-      min-width: 100px;
+      flex: 0 0 39%;
     }
 
     & .ant-space-item:first-child {
       margin-right: 1px !important;
-      flex: 0 0 50px;
-      min-width: 50px;
+      flex: 0 0 20%;
+    }
+
+    & .ant-space-item:nth-child(4) {
+      min-width: 24px;
+      flex: 1 1 20px;
+      text-align: right;
     }
 
     & .ant-space-item:last-child {

@@ -1,6 +1,6 @@
 import React from "react";
 import {Form, Input, Button} from "antd";
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import { CloseOutlined, PlusOutlined } from '@ant-design/icons';
 const { TextArea } = Input;
 
 export default function Method() {
@@ -17,13 +17,12 @@ export default function Method() {
   return (
     <Form.List name="method">
       {(fields, { add, remove }) => {
-        console.log(fields)
         return (
           <div>
             {fields.map((field, index) => (
               <Form.Item
+                style={{flexFlow: "nowrap"}}
                 {...formItemLayout}
-                label={`${index + 1}`}
                 required={false}
                 key={field.key}
               >
@@ -39,14 +38,14 @@ export default function Method() {
                   ]}
                   noStyle
                 >
-                  <TextArea rows={2} placeholder="Next step here" style={{ width: '90%' }} />
+                  <TextArea rows={2} placeholder={`Step ${index + 1}.`} style={{ width: '90%' }} />
                 </Form.Item>
                 {fields.length > 1 ? (
-                  <MinusCircleOutlined
-                    className="dynamic-delete-button"
-                    style={{ margin: '0 8px 20px 0' }}
-                    onClick={() => remove(field.name)}
-                  />
+                <CloseOutlined
+                  style={{ color: '#e41818', margin: '0 8px 20px 0' }}
+                  className="dynamic-delete-button"
+                  onClick={() => remove(field.name)}
+                />
                 ) : null}
               </Form.Item>
             ))}

@@ -14,7 +14,8 @@ const dbToGraphQL = (recipe) => ({
   ingredients: recipe.Ingredients ? recipe.Ingredients.map(i => ({
     name: i.Name,
     amount: i.Amount,
-    measurement: i.Measurement
+    measurement: i.Measurement,
+    optional: i.Optional || false
   })) : []
 });
 
@@ -31,7 +32,8 @@ const graphQlToDb = (recipe) => ({
   Ingredients: recipe.ingredients ? recipe.ingredients.map(i => ({
     Name: i.name,
     Amount: i.amount,
-    Measurement: i.measurement
+    Measurement: i.measurement,
+    Optional: i.optional 
   })) : undefined
 })
 

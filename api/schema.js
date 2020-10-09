@@ -54,6 +54,7 @@ module.exports.schema =
       name: String
       measurement: String
       amount: Float
+      optional: Boolean
     }
     input RecipeInput {
       name: String!
@@ -71,5 +72,6 @@ module.exports.schema =
       name: String
       measurement: String
       amount: Float
+      optional: Boolean
     }
 `

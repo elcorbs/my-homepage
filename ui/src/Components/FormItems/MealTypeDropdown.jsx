@@ -6,13 +6,11 @@ const { Option } = Select;
 export default function MealTypeFormItem() {
   return (
     <Form.Item
-      label="Meal Type"
       name="type"
     >
       <MealTypeDropdown
         showSearch
-        style={{ width: 200 }}
-        placeholder="Select a type"
+        placeholder="Select a meal type"
         optionFilterProp="children"
         filterOption={(input, option) =>
           option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0

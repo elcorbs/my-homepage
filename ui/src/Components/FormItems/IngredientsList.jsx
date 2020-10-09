@@ -1,7 +1,7 @@
 import React from "react";
-import { Space, Form, Button, InputNumber } from "antd";
+import { Space, Form, Button, InputNumber, Checkbox } from "antd";
 import SelectorWithAdd from "./SelectorWithAdd";
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import { CloseOutlined, PlusOutlined } from '@ant-design/icons';
 
 export default function IngredientsList({ measures, ingredients }) {
   return (
@@ -42,7 +42,17 @@ export default function IngredientsList({ measures, ingredients }) {
                     rules: [{ requied: true, message: "Please enter the ingredient" }]
                   }}
                 />
-                <MinusCircleOutlined
+                <Form.Item
+                  {...field}
+                  className="optional-ingredient-checkbox"
+                  name={[field.name, 'optional']}
+                  fieldKey={[field.fieldKey, 'optional']}
+                  valuePropName='checked'
+                >
+                  <Checkbox>Optional </Checkbox>
+                </Form.Item>
+                <CloseOutlined
+                  style={{color: '#e41818'}}
                   onClick={() => remove(field.name)} className="ingredient-remove-icon"
                 />
               </Space>

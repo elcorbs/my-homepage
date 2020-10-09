@@ -40,18 +40,12 @@
   display: inline-block;
   overflow: hidden;
   white-space: nowrap;
-  text-align: right;
   vertical-align: middle;
-  flex: 0 0 33.33333333%;
   max-width: 33.33333333%;
   position: relative;
   flex-grow: 0;
   color: rgba(0, 0, 0, 0.85);
   padding-right: 7px;
-}
-
-.switch {
-  display: flex;
 }
 
 @media screen and (min-width:320px) and (max-width:640px) {

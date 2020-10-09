@@ -76,7 +76,7 @@ export default function ViewRecipe(props) {
       </p>
       {recipe.recipeLink ? <a href={recipe.recipeLink} target="_blank" rel="noopener noreferrer"> Link to recipe here</a> : null}
       {recipe.ingredients ? <ul>
-        {recipe.ingredients.map(i => <li key={i.name}>{i.amount} {i.measurement} {i.name} </li>)}
+      {recipe.ingredients.map(i => <li key={i.name}>{i.amount} {i.measurement} {i.name} {i.optional ? <span className="optional-tag"> - optional</span> : null}</li>)}
       </ul> : null}
       {recipe.method ? <ol>
         {recipe.method.map((m, index) => <li key={index}>{splitTextIntoHtmlLines(m)}</li>)}
@@ -88,4 +88,4 @@ export default function ViewRecipe(props) {
   )
 }
 
-const splitTextIntoHtmlLines = (text) => text ? text.split("\n").map(l => <>{l}<br /></>) : null;
+const splitTextIntoHtmlLines = (text) => text ? text.split("\n").map((l, i) => <span key={i}>{l}<br /></ span>) : null;

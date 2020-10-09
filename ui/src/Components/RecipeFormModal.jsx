@@ -49,21 +49,21 @@ export default function RecipeFormModal({ closeModal, submitForm, cuisines, reci
         name="basic"
         initialValues={{ remember: true, ...recipe }}
         onFinish={recipe => submitForm(removeHiddenValues(recipe))}
+        colon={false}
+        layout="vertical"
       >
         <Form.Item
-          label="Name"
           name="name"
           rules={[{ required: true, message: 'Please enter the recipe name' }]}
         >
-          <Input disabled={recipe ? true : false} />
+          <Input placeholder="Name" disabled={recipe ? true : false} />
         </Form.Item>
         <MealTypeFormItem />
         <SelectorWithAdd
           options={cuisines}
-          placeholder={""}
+          placeholder={"Select a cuisine"}
           formProps={{
             name: "cuisine",
-            label: "Cuisine"
           }}
         />
         <SwitchWithLabel initialValue={usingLink} onChange={useLink} />
@@ -72,12 +72,12 @@ export default function RecipeFormModal({ closeModal, submitForm, cuisines, reci
             ? <LinkRecipe />
             : <ManualRecipeEntry storedIngredients={storedIngredients} />
         }
-        <Form.Item name="notes" label="Notes" >
-          <TextArea rows={4} />
+        <Form.Item name="notes" >
+          <TextArea rows={4} placeholder="Notes" />
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit">
-            Submit
+            {recipe ? "Edit" : "Add"} Recipe
         </Button>
         </Form.Item>
       </Form>
@@ -96,10 +96,9 @@ function ManualRecipeEntry({ storedIngredients }) {
   return (
     <>
       <Form.Item
-        label="Number of Servings"
         name="servings"
       >
-        <InputNumber min={0} step={1} placeholder={"Number of servings"} />
+        <InputNumber style={{minWidth: '122px' }} type="number" min={0} step={1} placeholder={"No. of servings"} />
       </Form.Item>
       <IngredientsList ingredients={storedIngredients.ingredients} measures={storedIngredients.measures} />
       <Method />
@@ -109,11 +108,8 @@ function ManualRecipeEntry({ storedIngredients }) {
 
 function LinkRecipe() {
   return (
-    <Form.Item
-      name="recipeLink"
-      label="Link to Recipe"
-    >
-      <Input />
+    <Form.Item name="recipeLink" >
+      <Input placeholder="Link to Recipe" />
     </Form.Item>
   )
 }

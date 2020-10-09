@@ -37,7 +37,7 @@ function PinnedRecipes({ recipes }) {
     <div className="pinnedRecipesContainer">
       <PushpinOutlined className="pinIcon" />
       <ul>
-        {pinnedRecipes.map(r => <RecipeListItem recipe={r} />)}
+        {pinnedRecipes.map(r => <RecipeListItem key={r.name} recipe={r} />)}
       </ul>
     </div>
   )

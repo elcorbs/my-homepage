@@ -4,16 +4,6 @@ import { CloseOutlined, PlusOutlined } from '@ant-design/icons';
 const { TextArea } = Input;
 
 export default function Method() {
-  const formItemLayout = {
-    labelCol: {
-      xs: { span: 24 },
-      sm: { span: 2 },
-    },
-    wrapperCol: {
-      xs: { span: 24 },
-      sm: { span: 22 },
-    },
-  };
   return (
     <Form.List name="method">
       {(fields, { add, remove }) => {
@@ -21,10 +11,9 @@ export default function Method() {
           <div>
             {fields.map((field, index) => (
               <Form.Item
-                style={{flexFlow: "nowrap"}}
-                {...formItemLayout}
                 required={false}
                 key={field.key}
+                className="method-step-container"
               >
                 <Form.Item
                   {...field}
@@ -38,11 +27,10 @@ export default function Method() {
                   ]}
                   noStyle
                 >
-                  <TextArea rows={2} placeholder={`Step ${index + 1}.`} style={{ width: '90%' }} />
+                  <TextArea rows={2} placeholder={`Step ${index + 1}.`} />
                 </Form.Item>
                 {fields.length > 1 ? (
                 <CloseOutlined
-                  style={{ color: '#e41818', margin: '0 8px 20px 0' }}
                   className="dynamic-delete-button"
                   onClick={() => remove(field.name)}
                 />

@@ -10,7 +10,7 @@ export default function IngredientsList({ measures, ingredients }) {
         return (
           <div>
             {fields.map(field => (
-              <Space className="list-input" key={field.key} className="ingredient-container" align="start">
+              <Space className="list-input" key={field.key} align="start">
                 <Form.Item
                   {...field}
                   className="small-ingredient-item"

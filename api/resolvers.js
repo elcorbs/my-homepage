@@ -1,4 +1,15 @@
-const { getRecipeByName, getRecipes, addRecipe, getStoredValues, deleteRecipe, toggleValue } = require("./dynamodbGateway");
+const {
+  getRecipeByName,
+  getRecipes,
+  addRecipe,
+  getStoredValues,
+  deleteRecipe,
+  toggleValue,
+} = require("./recipesGateway");
+const {
+  getNotes,
+  updateNotes
+} = require("./notesGateway");
 const { login, signup, authenticateUser } = require("./authentication");
 
 const dbToGraphQL = (recipe) => ({
@@ -46,5 +57,7 @@ module.exports.resolvers = {
   toggleWantToTry: ({ name, flag }) => toggleValue(name, "WantToTry", flag).then(data => data),
   toggleEatingNext: ({ name, flag }) => toggleValue(name, "Pinned", flag).then(data => data),
   login: ({ username, password }) => login(username, password).then(data => data),
-  signup: ({ username, password }) => signup(username, password).then(data => data)
+  signup: ({ username, password }) => signup(username, password).then(data => data),
+  notes: () => getNotes().then(data => data),
+  saveNotes: ({notes}) => updateNotes(notes).then(data => data)
 }

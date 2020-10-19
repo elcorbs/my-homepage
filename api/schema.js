@@ -4,6 +4,7 @@ module.exports.schema =
       recipes: [Recipe]
       recipe(name: String): Recipe
       repeatableValues: ListTypes
+      notes: String
     }
     type Mutation {
       addRecipe(input: RecipeInput): Recipe
@@ -12,6 +13,7 @@ module.exports.schema =
       toggleEatingNext(name: String, flag: Boolean): Boolean
       login(username: String!, password: String!): AuthPayload
       signup(username: String!, password: String!): AuthPayload
+      saveNotes(notes: String): String
     }
     type AuthPayload {
       token: String

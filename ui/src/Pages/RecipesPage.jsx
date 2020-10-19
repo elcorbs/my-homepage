@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { getRecipes, addRecipe } from "../Gateway/query-api";
+import { getRecipes, addRecipe } from "../Gateway/query-recipes";
 import BreadcrumbNavigator from "../Components/BreadcrumbNavigator";
 import RecipeFormModal from "../Components/RecipeFormModal";
 import RecipeList from "../Components/RecipeList";
@@ -43,7 +43,7 @@ export default function RecipesPage() {
   return (
     <div>
       <div className="breadcrumb-container">
-      <BreadcrumbNavigator />
+      <BreadcrumbNavigator path={["recipes"]} />
       </div>
       <Layout style={{flexWrap: "wrap"}}>
         <FilterPanel

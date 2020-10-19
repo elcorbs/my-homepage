@@ -6,7 +6,7 @@ import MealTypeFormItem from "./FormItems/MealTypeDropdown";
 import IngredientsList from "./FormItems/IngredientsList";
 import Method from "./FormItems/Method";
 import { useState, useEffect } from "react";
-import { getStoredIngredients } from "../Gateway/query-api";
+import { getStoredIngredients } from "../Gateway/query-recipes";
 const { TextArea } = Input;
 
 export default function RecipeFormModal({ closeModal, submitForm, cuisines, recipe }) {

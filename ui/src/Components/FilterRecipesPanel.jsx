@@ -2,7 +2,7 @@ import React from "react";
 import { Layout, Select, Button, Input } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { getIngredientsFromRecipes, isAdmin } from "../Utilities/helper-functions";
-import { login } from "../Gateway/query-api";
+import { login } from "../Gateway/query-recipes";
 import "./filterPanel.scss";
 import { useState } from "react";
 import { MealTypeDropdown } from "../Components/FormItems/MealTypeDropdown";

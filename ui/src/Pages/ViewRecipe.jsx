@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getRecipe, editRecipe, removeRecipe, toggleWantToTry, togglePinned } from "../Gateway/query-api";
+import { getRecipe, editRecipe, removeRecipe, toggleWantToTry, togglePinned } from "../Gateway/query-recipes";
 import BreadcrumbNavigator from "../Components/BreadcrumbNavigator";
 import { EditOutlined, DeleteOutlined, StarFilled, StarOutlined, PushpinFilled, PushpinOutlined } from "@ant-design/icons";
 import RecipeFormModal from "../Components/RecipeFormModal";
@@ -55,7 +55,7 @@ export default function ViewRecipe(props) {
 
   return (
     <div>
-      <BreadcrumbNavigator recipeName={recipe.name.toLowerCase()} />
+      <BreadcrumbNavigator path={["recipes", recipe.name.toLowerCase()]} />
       {editting &&
         <RecipeFormModal
           closeModal={closeModal}

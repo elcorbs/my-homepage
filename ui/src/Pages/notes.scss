@@ -1,0 +1,25 @@
+.notes-input {
+  min-height: 200px;
+  min-width: 100%;
+  margin-bottom: 20px;
+  background-color: transparent;
+  border: none;
+
+  &:focus-within, &:focus {
+    border-width: 1px;
+    border-style: solid;
+    border-color: -internal-light-dark(rgb(118, 118, 118), rgb(133, 133, 133));
+    border-image: initial;
+    padding: 2px;
+    background-color: #fff;
+  }
+}
+
+.error-mark {
+  color: #e31f1f;
+  font-size: 18px;
+}
+
+.error-mark-container {
+  text-align: right;
+}

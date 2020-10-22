@@ -4,6 +4,7 @@
   margin-bottom: 20px;
   background-color: transparent;
   border: none;
+  color: transparent;
 
   &:focus-within, &:focus {
     border-width: 1px;
@@ -12,7 +13,11 @@
     border-image: initial;
     padding: 2px;
     background-color: #fff;
+    color: rgba(0, 0, 0, 0.65);
   }
+}
+.notes-formatted {
+  position: absolute;
 }
 
 .error-mark {

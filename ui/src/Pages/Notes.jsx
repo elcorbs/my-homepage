@@ -54,6 +54,8 @@ function Editor({ getInitalText, save, onFocus }) {
     return convertor.makeHtml(text);
   }
 
+  const numberOfLines = text ? text.split('\n').length : 0;
+
   return (
     <div>
       <div dangerouslySetInnerHTML={{ __html: blurred ? formatText() : null }} className="notes-formatted" />
@@ -63,6 +65,7 @@ function Editor({ getInitalText, save, onFocus }) {
           onChange={(e) => setText(e.target.value)}
           className="notes-input"
           onBlur={onBlur}
+          rows={numberOfLines + 5}
           onFocus={() => { onFocus(); setBlurred(false); }}
         />
       </div>

@@ -1,21 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Layout } from "antd";
 import { getCuisinesFromRecipes, getUsername } from "../Utilities/helper-functions";
 import { StarFilled, PushpinOutlined } from "@ant-design/icons"
 import "./styles.scss";
-const { Content } = Layout;
 
 export default function RecipeList({ recipes }) {
   const cuisines = getCuisinesFromRecipes(recipes);
   return (
-    <Content className="site-layout-background"
-      style={{
-        padding: 24,
-        margin: 0,
-        minHeight: 280,
-
-      }}>
+    <>
       {getUsername() === "emma" && <PinnedRecipes recipes={recipes} />}
       {cuisines.map(cuisine => {
         return (
@@ -27,7 +19,7 @@ export default function RecipeList({ recipes }) {
           </div>
         )
       })}
-    </Content>
+    </>
   )
 }
 function PinnedRecipes({ recipes }) {

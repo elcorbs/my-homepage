@@ -1,15 +1,15 @@
 import React from "react";
-import { Layout, Select, Button, Input } from "antd";
+import { Select, Button, Input } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { getIngredientsFromRecipes, isAdmin } from "../Utilities/helper-functions";
 import { login } from "../Gateway/query-recipes";
 import "./filterPanel.scss";
 import { useState } from "react";
 import { MealTypeDropdown } from "../Components/FormItems/MealTypeDropdown";
-const { Sider } = Layout;
 const { Option } = Select;
 
-export default function FilterPanel({ openRecipeForm, recipes, filter }) {
+
+export default function Filters({ openRecipeForm, recipes, filter }) {
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem('emmas-recipes-token') != null);
   const [ingredientsFilter, setIngredientsFilter] = useState([]);
   const [mealTypeFilter, setMealTypeFilter] = useState(null);
@@ -26,29 +26,24 @@ export default function FilterPanel({ openRecipeForm, recipes, filter }) {
 
   return (
     <>
-      <Sider
-        theme="light"
-        className="panel"
-      >
-        {!loggedIn && <LoginForm setLoggedIn={setLoggedIn} />}
-        {isAdmin() && <NewRecipeButton openForm={openRecipeForm} />}
-        <div className="filter-panel-container" style={{overflow: 'scroll'}} >
-          <div id='ingredient-filter'>
-            <Select
-              mode="multiple"
-              style={{width: "100%"}}
-              onChange={filterIngredients}
-              placeholder="Filter by ingredients"
-              getPopupContainer={() => document.getElementById('ingredient-filter')}
-            >
-              {getIngredientsFromRecipes(recipes).map(ingredient => <Option key={ingredient} value={ingredient}>{ingredient}</Option>)}
-            </Select>
-          </div>
-        </div>        
-        <div className="filter-panel-container">
-          <MealTypeDropdown onChange={filterMealType} allowClear />
+      {!loggedIn && <LoginForm setLoggedIn={setLoggedIn} />}
+      {isAdmin() && <NewRecipeButton openForm={openRecipeForm} />}
+      <div className="filter-panel-container" style={{overflow: 'scroll'}} >
+        <div id='ingredient-filter'>
+          <Select
+            mode="multiple"
+            style={{width: "100%"}}
+            onChange={filterIngredients}
+            placeholder="Filter by ingredients"
+            getPopupContainer={() => document.getElementById('ingredient-filter')}
+          >
+            {getIngredientsFromRecipes(recipes).map(ingredient => <Option key={ingredient} value={ingredient}>{ingredient}</Option>)}
+          </Select>
         </div>
-      </Sider>
+      </div>        
+      <div className="filter-panel-container">
+        <MealTypeDropdown onChange={filterMealType} allowClear />
+      </div>
     </>
   )
 }

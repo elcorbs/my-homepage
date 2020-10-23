@@ -1,9 +1,10 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import BreadcrumbNavigator from "./../Components/BreadcrumbNavigator";
 import "./notes.scss";
 import { getNotes, editNotes } from "./../Gateway/query-notes";
 import { Converter } from "showdown";
+import xss from "xss";
+import PageLayout from "./PageLayout";
 
 export default function Notes() {
   const [saveError, toggleSaveError] = useState(false);
@@ -14,15 +15,12 @@ export default function Notes() {
   }
 
   return (
-    <div>
-      <div className="breadcrumb-container">
-        <BreadcrumbNavigator path={["notes"]} />
-      </div>
-      <div>
+    <PageLayout path={["notes"]} sideBarContent={<div> Here is my notes list</div>} >
+      <div style={{ flex: '4 1 auto' }}>
         <Editor getInitalText={getNotes} save={save} onFocus={() => toggleSaveError(false)} />
+        <ErrorMark error={saveError} />
       </div>
-      <ErrorMark error={saveError} />
-    </div>
+    </PageLayout>
   )
 }
 
@@ -39,7 +37,7 @@ function Editor({ getInitalText, save, onFocus }) {
   }, [getInitalText])
 
   const onBlur = (event) => {
-    save(event.target.value)
+    save(xss(event.target.value))
     setBlurred(true);
   }
 
@@ -51,7 +49,8 @@ function Editor({ getInitalText, save, onFocus }) {
       tasklists: true,
       openLinksInNewWindow: true
     });
-    return convertor.makeHtml(text);
+    const html = convertor.makeHtml(text);
+    return xss(html);
   }
 
   const numberOfLines = text ? text.split('\n').length : 0;
@@ -65,7 +64,7 @@ function Editor({ getInitalText, save, onFocus }) {
           onChange={(e) => setText(e.target.value)}
           className="notes-input"
           onBlur={onBlur}
-          rows={numberOfLines + 5}
+          rows={numberOfLines + 3}
           onFocus={() => { onFocus(); setBlurred(false); }}
         />
       </div>

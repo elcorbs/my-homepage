@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react"
 import { getRecipes, addRecipe } from "../Gateway/query-recipes";
-import BreadcrumbNavigator from "../Components/BreadcrumbNavigator";
 import RecipeFormModal from "../Components/RecipeFormModal";
 import RecipeList from "../Components/RecipeList";
-import FilterPanel from "../Components/FilterRecipesPanel";
-import { Layout } from "antd";
+import Filters from "../Components/FilterRecipesPanel";
 import { getCuisinesFromRecipes } from "../Utilities/helper-functions";
+import PageLayout from "./PageLayout";
 import "./recipesPage.scss";
 
 export default function RecipesPage() {
@@ -39,27 +38,27 @@ export default function RecipesPage() {
     });
     setFilteredRecipes(filteredRecipes);
   }
+  const FilterSideBar = (
+    <Filters
+      openRecipeForm={openForm}
+      recipes={recipes}
+      filter={filter}
+    />
+  )
 
   return (
     <div>
-      <div className="breadcrumb-container">
-      <BreadcrumbNavigator path={["recipes"]} />
-      </div>
-      <Layout style={{flexWrap: "wrap"}}>
-        <FilterPanel
-          openRecipeForm={openForm}
-          recipes={recipes}
-          filter={filter}
+      {recipeFormVisible && (
+        <RecipeFormModal
+          closeModal={closeForm}
+          submitForm={submitForm}
+          cuisines={cuisines}
         />
-        {recipeFormVisible && (
-          <RecipeFormModal
-            closeModal={closeForm}
-            submitForm={submitForm}
-            cuisines={cuisines}
-          />
-        )}
+      )}
+      <PageLayout sideBarContent={FilterSideBar} path={["recipes"]}>
         <RecipeList recipes={filteredRecipes} />
-      </Layout>
+      </PageLayout>
     </div>
   )
 }
+

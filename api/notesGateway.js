@@ -9,7 +9,30 @@ module.exports.getNotes = () => {
   const params = {
     TableName: process.env.DYNAMO_TABLE,
     Key: {
-      'Name': 'Emmas notes',
+      'Category': 'NOTES'
+    }
+  }
+
+  console.log("contacting db")
+  return new Promise((resolve, reject) => {
+    database
+      .get(params, function (err, data) {
+        console.log("received data", data)
+        console.log("received error", err)
+        if (err) {
+          console.log(`There was an error fetching the notes from the database`, err);
+          return reject(err);
+        }
+        return resolve(data.Items)
+      })
+  })
+}
+
+module.exports.getNote = (title) => {
+  const params = {
+    TableName: process.env.DYNAMO_TABLE,
+    Key: {
+      'Name': title,
       'Category': 'NOTES'
     }
   }
@@ -26,21 +49,21 @@ module.exports.getNotes = () => {
         }
         if (!data.Item) return resolve(null);
 
-        return resolve(data.Item.Data)
+        return resolve(data.Item)
       })
   })
 }
 
-module.exports.updateNotes = (notes) => {
+module.exports.updateNotes = (title, notes) => {
   const params = {
     TableName: process.env.DYNAMO_TABLE,
     Item: {
-      "Name": 'Emmas notes',
+      "Name": title,
       "Category": 'NOTES',
       "Data": notes
     }
   };
-  console.log("Trying to update Emmas notes User to the db")
+  console.log(`Trying to update ${title} in the db`)
   console.log("Adding to db with params", params)
   return new Promise((resolve, reject) => {
     database

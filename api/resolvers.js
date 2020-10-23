@@ -8,11 +8,12 @@ const {
 } = require("./recipesGateway");
 const {
   getNotes,
-  updateNotes
+  updateNotes,
+  getNote
 } = require("./notesGateway");
 const { login, signup, authenticateUser } = require("./authentication");
 
-const dbToGraphQL = (recipe) => ({
+const recipeToResponse = (recipe) => ({
   name: recipe.Name,
   cuisine: recipe.Cuisine,
   method: recipe.Method ? recipe.Method : [],
@@ -30,7 +31,7 @@ const dbToGraphQL = (recipe) => ({
   })) : []
 });
 
-const graphQlToDb = (recipe) => ({
+const recipeToDbEntity = (recipe) => ({
   Name: recipe.name,
   Cuisine: recipe.cuisine,
   Method: recipe.method,
@@ -48,16 +49,22 @@ const graphQlToDb = (recipe) => ({
   })) : undefined
 })
 
+const noteToResponse = (note) => ({
+  title: note.Name,
+  text: note.Data
+});
+
 module.exports.resolvers = {
-  recipe: ({ name }) => getRecipeByName(name).then(data => dbToGraphQL(data)),
-  recipes: () => getRecipes().then(data => data.map(recipe => dbToGraphQL(recipe))),
-  addRecipe: (args, context) => authenticateUser(context, args, ({ input }) => addRecipe(graphQlToDb(input))).then(data => dbToGraphQL(data)),
+  recipe: ({ name }) => getRecipeByName(name).then(data => recipeToResponse(data)),
+  recipes: () => getRecipes().then(data => data.map(recipe => recipeToResponse(recipe))),
+  addRecipe: (args, context) => authenticateUser(context, args, ({ input }) => addRecipe(recipeToDbEntity(input))).then(data => recipeToResponse(data)),
   repeatableValues: () => getStoredValues().then(data => data),
   removeRecipe: (args, context) =>  authenticateUser(context, args, ({name}) => deleteRecipe(name)).then(data => data),
   toggleWantToTry: ({ name, flag }) => toggleValue(name, "WantToTry", flag).then(data => data),
   toggleEatingNext: ({ name, flag }) => toggleValue(name, "Pinned", flag).then(data => data),
   login: ({ username, password }) => login(username, password).then(data => data),
   signup: ({ username, password }) => signup(username, password).then(data => data),
-  notes: () => getNotes().then(data => data),
-  saveNotes: ({notes}) => updateNotes(notes).then(data => data)
+  notes: () => getNotes().then(data => data.map(note => noteToResponse(note))),
+  note: () => getNote().then(data => noteToResponse(data)),
+  saveNote: ({title, notes}) => updateNotes(title, notes).then(data => data)
 }

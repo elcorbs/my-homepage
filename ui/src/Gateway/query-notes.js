@@ -3,11 +3,11 @@ import { getToken, isLoggedIn } from "../Utilities/helper-functions";
 export async function getNotes() {
   const schema = `query {notes}`;
   const response = await queryApi(schema);
-  return response.notes;
+  return response.notes.at(0).text;
 }
 
 export async function editNotes(notes) {
-  const schema = `mutation {saveNotes(notes: """${notes}""")}`
+  const schema = `mutation {saveNote(title: "Emmas first note" ,notes: """${notes}""")}`
   return await queryApi(schema);
 }
 

@@ -4,7 +4,7 @@ module.exports.schema =
       recipes: [Recipe]
       recipe(name: String): Recipe
       repeatableValues: ListTypes
-      notes: [Notes]
+      notes: [Note]
       note(title: String): Note
     }
     type Mutation {

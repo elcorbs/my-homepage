@@ -1,22 +1,24 @@
-const { DynamoDB, config } = require('aws-sdk');
+const { config } = require('aws-sdk');
+const dynamodb = require('serverless-dynamodb-client');
 
 config.update({ region: 'eu-west-2' });
-const database = new DynamoDB.DocumentClient({
-  apiVersion: '2012-08-10',
-});
 
+const database = dynamodb.doc;
+database.apiVersion = '2012-08-10';
 module.exports.getNotes = () => {
   const params = {
     TableName: process.env.DYNAMO_TABLE,
-    Key: {
-      'Category': 'NOTES'
+    KeyConditionExpression: 'Category = :hkey',
+    ExpressionAttributeValues: {
+      ':hkey': 'NOTES',
     }
   }
 
   console.log("contacting db")
+  console.log(params)
   return new Promise((resolve, reject) => {
     database
-      .get(params, function (err, data) {
+      .query(params, function (err, data) {
         console.log("received data", data)
         console.log("received error", err)
         if (err) {

@@ -1,15 +1,17 @@
 plugins:
+  - serverless-dynamodb-local
   - serverless-offline
   - serverless-finch
 service: my-homepage
-region: eu-west-2
-stage: ${opt:stage}
 provider:
+  stage: ${opt:stage}
+  region: eu-west-2
   name: aws
   environment:
     DYNAMO_TABLE: ${self:service}-storage
     APP_SECRET: ${ssm:/${self:service}-api/APP_SECRET}
     REACT_APP_API_URL: https://6lac5t2w1i.execute-api.eu-west-2.amazonaws.com/production/query
+    STAGE: ${self:provider.stage}
   runtime: nodejs12.x
   iamRoleStatements:
     - Effect: "Allow"
@@ -73,8 +75,22 @@ resources:
       Properties:
         BucketName: "emma-corbett.me.uk"
 custom:
+  serverless-offline:
+    httpPort: 5000
   client:
     bucketName: "emma-corbett.me.uk"
     distributionFolder: ui/build
     indexDocument: index.html
     errorDocument: index.html
+  dynamodb:
+    stages: 
+      - dev
+    start:
+      port: 8000
+      migrate: true
+      seed: true
+    seed:
+      dev:
+        sources:
+          - table: my-homepage-storage 
+            rawsources: [./dev-db-seed.json]

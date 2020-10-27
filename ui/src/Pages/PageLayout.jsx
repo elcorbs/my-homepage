@@ -10,12 +10,13 @@ export default function PageLayout({ sideBarContent, path, children }) {
         <BreadcrumbNavigator path={path} />
       </div>
       <Layout style={{ flexWrap: "wrap" }}>
-        <Sider
+        {sideBarContent && <Sider
           theme="light"
           className="panel"
         >
           {sideBarContent}
         </Sider>
+        }
         <Content className="site-layout-background"
           style={{
             padding: 24,

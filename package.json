@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "serverless-dynamodb-client": "0.0.2",
     "serverless-finch": "^2.5.2"
   }
 }

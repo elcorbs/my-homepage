@@ -1,9 +1,9 @@
-const { DynamoDB, config } = require('aws-sdk');
+const { config } = require('aws-sdk');
+const dynamodb = require('serverless-dynamodb-client');
 
 config.update({ region: 'eu-west-2' });
-const database = new DynamoDB.DocumentClient({
-  apiVersion: '2012-08-10',
-});
+const database = dynamodb.doc;
+database.apiVersion = '2012-08-10';
 
 module.exports.getRecipes = () => {
   var params = {

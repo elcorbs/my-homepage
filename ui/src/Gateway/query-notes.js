@@ -1,13 +1,13 @@
 import { getToken, isLoggedIn } from "../Utilities/helper-functions";
 
 export async function getNotes() {
-  const schema = `query {notes}`;
+  const schema = `query {notes{ title, text}}`;
   const response = await queryApi(schema);
-  return response.notes.at(0).text;
+  return response.notes;
 }
 
-export async function editNotes(notes) {
-  const schema = `mutation {saveNote(title: "Emmas first note" ,notes: """${notes}""")}`
+export async function editNote(title, note) {
+  const schema = `mutation {saveNote(title: "${title}" ,notes: """${note}""")}`
   return await queryApi(schema);
 }
 

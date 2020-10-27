@@ -76,7 +76,7 @@ const getKeyValue = (recipe, key) => recipe[key] ? `${key}:  ${formatString(reci
 const formatString = (text) => `"${text.replace(/(\r\n|\r|\n)/gm, "\\n")}"`;
 
 async function queryApi(query, callback) {
-  const apiUrl = "https://6lac5t2w1i.execute-api.eu-west-2.amazonaws.com/production/query"
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   let url = new URL(apiUrl);
   const request = {

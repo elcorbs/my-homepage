@@ -12,7 +12,7 @@ export async function editNote(title, note) {
 }
 
 async function queryApi(query) {
-  const apiUrl = "https://6lac5t2w1i.execute-api.eu-west-2.amazonaws.com/production/query"
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   let url = new URL(apiUrl);
   const request = {

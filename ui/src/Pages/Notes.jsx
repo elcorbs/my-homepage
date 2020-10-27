@@ -1,22 +1,22 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import "./notes.scss";
-import { getNotes, editNote } from "./../Gateway/query-notes";
+import { getNotes, editNote, getNote } from "./../Gateway/query-notes";
 import { Converter } from "showdown";
 import xss from "xss";
 import PageLayout from "./PageLayout";
 
 export default function Notes() {
   const [saveError, toggleSaveError] = useState(false);
-  const [notes, setNotes] = useState([{title: 'Untitled Note', text: '' }]);
-
+  const [noteTitles, setNotesTitles] = useState(['Untitled Note']);
   useEffect(() => {
     const getAndSetNotes = async () => {
       const notes = await getNotes();
-      setNotes(notes)
+      const titles = notes.map(note => note.title);
+      setNotesTitles(titles)
     }
     getAndSetNotes();
-  });
+  }, []);
 
   const save = async (title, note) => {
     const lines = note.split('\n');
@@ -25,27 +25,40 @@ export default function Notes() {
     const response = await editNote(title, lines.join('\n'));
     if (!response) toggleSaveError(true);
   }
-  console.log(notes)
 
   return (
-    <PageLayout path={["notes"]} sideBarContent={null} >
+    <PageLayout path={["notes"]} sideBarContent={<NoteTitleList titles={noteTitles}/>} >
       <div style={{ flex: '4 1 auto' }}>
-        <Editor initalText={notes[0].text} save={(note) => save('Emmas Notes', note)} onFocus={() => toggleSaveError(false)} />
+        <Editor getText={async () => await getNote('Emmas notes')} save={(note) => save('Emmas notes', note)} onFocus={() => toggleSaveError(false)} />
         <ErrorMark error={saveError} />
       </div>
     </PageLayout>
   )
 }
 
-function Editor({ initialText, save, onFocus }) {
-  const [blurred, setBlurred] = useState(true);
-  const [text, setText] = useState(initialText);
+function NoteTitleList({titles}) {
+  return titles.map(title => {
+    return <button key={title} className="note-title-button" >
+      {title}
+    </button>
+  })
+}
 
+function Editor({ getText, save, onFocus }) {
+  const [blurred, setBlurred] = useState(true);
+  const [text, setText] = useState("");
 
   const onBlur = (event) => {
     save(xss(event.target.value))
     setBlurred(true);
   }
+  useEffect(() => {
+    const getAndSetText = async () => {
+      const text = await getText();
+      setText(text)
+    }
+    getAndSetText();
+  }, [getText]);
 
   const formatText = () => {
     const convertor = new Converter({

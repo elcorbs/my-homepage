@@ -46,7 +46,7 @@ module.exports.getNote = (title) => {
         console.log("received data", data)
         console.log("received error", err)
         if (err) {
-          console.log(`There was an error fetching the notes from the database`, err);
+          console.log(`There was an error fetching the note ${title} from the database`, err);
           return reject(err);
         }
         if (!data.Item) return resolve(null);

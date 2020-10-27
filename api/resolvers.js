@@ -65,6 +65,6 @@ module.exports.resolvers = {
   login: ({ username, password }) => login(username, password).then(data => data),
   signup: ({ username, password }) => signup(username, password).then(data => data),
   notes: () => getNotes().then(data => data.map(note => noteToResponse(note))),
-  note: () => getNote().then(data => noteToResponse(data)),
+  note: ({title}) => getNote(title).then(data => noteToResponse(data)),
   saveNote: ({title, notes}) => updateNotes(title, notes).then(data => data)
 }

@@ -1,9 +1,15 @@
 import { getToken, isLoggedIn } from "../Utilities/helper-functions";
 
 export async function getNotes() {
-  const schema = `query {notes{ title, text}}`;
+  const schema = `query {notes{ title }}`;
   const response = await queryApi(schema);
   return response.notes;
+}
+
+export async function getNote(title){
+  const schema = `query {note(title: "${title}"){text}}`;
+  const response = await queryApi(schema);
+  return response.note.text;
 }
 
 export async function editNote(title, note) {

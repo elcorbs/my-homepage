@@ -26,6 +26,9 @@ jobs:
           name: Install serverless offline
           command: npm install serverless-offline --save-dev
       - run:
+          name: Install dynamo db local
+          command: npm install serverless-dynamodb-local --save-dev
+      - run:
           name: Install serverless finch
           command: npm install --save serverless-finch
       - run:

@@ -47,7 +47,7 @@ function NoteContent({ match, history }) {
 
   const save = async (title, note) => {
     const lines = note.split('\n');
-    const newTitle = lines.splice(0, 1)[0].replace('#', '');
+    const newTitle = lines.splice(0, 1)[0].replace('#', '').trim();
     const response = await saveNote(newTitle, lines.join('\n'));
 
     if (!response) toggleSaveError(true);

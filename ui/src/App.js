@@ -16,11 +16,15 @@ function App() {
         </Route>
         <Route exact path="/recipes" component={pageWrapper({ sectionTitle: "My Recipes", children: RecipesPage })} />
         <Route exact path="/recipes/:name" component={pageWrapper({ sectionTitle: "My Recipes", children: ViewRecipe })} />
-
         <Route path="/notes" component={pageWrapper({ sectionTitle: "My Notes", children: Notes })} />
+        <Route component={NoMatch} />
       </Switch>
     </main>
   );
+}
+function NoMatch(props) {
+  console.log(props)
+  return <div>Can't find the page you're looking for </div>
 }
 
 function pageWrapper({ sectionTitle, children }) {

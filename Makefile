@@ -8,7 +8,7 @@ deploy-ui:
 
 .PHONY: build-ui
 build-ui:
-	cd ui && npm install && npm run build
+	cd ui && npm install && REACT_APP_API_URL="https://6lac5t2w1i.execute-api.eu-west-2.amazonaws.com/production/query" npm run build
 
 .PHONY: build-api
 build-api:
@@ -22,7 +22,7 @@ serve-ui:
 	cd ui && REACT_APP_API_URL="https://6lac5t2w1i.execute-api.eu-west-2.amazonaws.com/production/query" npm run start
 
 .PHONY: serve-api
-server-api:
+serve-api:
 	APP_SECRET='app-secret' AWS_ACCESS_KEY_ID='access-key' AWS_SECRET_ACCESS_KEY='secret-key' sls -s dev offline start --httpPort 5000 -r eu-west-2
 
 .PHONY: serve

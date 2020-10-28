@@ -22,6 +22,9 @@
 .notes-formatted {
   position: absolute;
   pointer-events: none;
+  a {
+    pointer-events: all;
+  }
 }
 
 .error-mark {

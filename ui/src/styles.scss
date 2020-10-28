@@ -1,5 +1,9 @@
 @import "../variables.scss";
 
+body {
+  background-color: $background-color;
+}
+
 .login-form-item {
   margin: 3px;
 }

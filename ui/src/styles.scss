@@ -1,16 +1,45 @@
 @import "../variables.scss";
 
-@media screen and (min-width:320px) and (max-width:640px) {
-  .main-content {
-    padding: 0px 11px;
-  }
+.login-form-item {
+  margin: 3px;
 }
 
-@media screen and (min-width:641px) {
-  .main-content {
-    padding: 0px 50px;
-  }
+.login-form-container {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  margin: 0 5px;
+  padding-bottom: 10px; 
 }
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  background: white;
+  height: auto;
+}
+
+.header-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 55%;
+}
+
+.site-navigation {
+  & a {
+    color: $main-header-color;
+    background-image: none !important;
+  }
+  line-height: normal;
+  align-self: flex-end;
+  display: flex;
+  justify-content: space-evenly;
+  width: 50%;
+}
+
 
 .layout {
   background-color: $background-color;
@@ -24,4 +53,22 @@ a {
     &:hover {
       background-size: 100% 88% !important;
     }
+}
+
+@media screen and (min-width:320px) and (max-width:640px) {
+  .main-content {
+    padding: 0px 11px;
+  }
+  .login-form-container {
+    flex-wrap: wrap;
+  }
+  .app-header {
+    height: auto;
+  }
+}
+
+@media screen and (min-width:641px) {
+  .main-content {
+    padding: 0px 50px;
+  }
 }

@@ -13,7 +13,6 @@ export default function Notes({ history }) {
   const [noteTitles, setNotesTitles] = useState([]);
 
   useEffect(() => {
-    console.log("re-get notes")
     const getAndSetNotes = async () => {
       const notes = await getNotes();
       const titles = notes.map(note => note.title);

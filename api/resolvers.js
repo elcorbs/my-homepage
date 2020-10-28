@@ -67,6 +67,6 @@ module.exports.resolvers = {
   signup: ({ username, password }) => signup(username, password).then(data => data),
   notes: () => getNotes().then(data => data.map(note => noteToResponse(note))),
   note: ({ title }) => getNote(title).then(data => noteToResponse(data)),
-  saveNote: ({ title, notes }) => updateNotes(title, notes).then(data => data),
-  removeNote: ({ title }) => deleteNote(title).then(data => data)
+  saveNote: (args, context) => authenticateUser(context, args, ({ title, notes }) => updateNotes(title, notes)).then(data => data),
+  removeNote: (args, context) => authenticateUser(context, args, ({ title }) => deleteNote(title)).then(data => data)
 }

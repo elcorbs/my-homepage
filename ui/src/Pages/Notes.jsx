@@ -8,6 +8,7 @@ import PageLayout from "./PageLayout";
 import { Switch, Route, Link, Redirect } from "react-router-dom";
 import { Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
+import { isLoggedIn } from "../Utilities/helper-functions";
 
 export default function Notes({ history }) {
   const [noteTitles, setNotesTitles] = useState([]);
@@ -99,6 +100,7 @@ function Editor({ getText, save, onFocus }) {
   }, [getText]);
 
   const formatText = () => {
+    if (!blurred && isLoggedIn()) return null;
     const convertor = new Converter({
       simpleLineBreaks: true,
       simplifiedAutoLink: true,
@@ -114,8 +116,8 @@ function Editor({ getText, save, onFocus }) {
 
   return (
     <div>
-      <div dangerouslySetInnerHTML={{ __html: blurred ? formatText() : null }} className="notes-formatted" />
-      <div>
+      <div dangerouslySetInnerHTML={{ __html: formatText() }} className="notes-formatted" />
+      {isLoggedIn() && <div>
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
@@ -124,7 +126,7 @@ function Editor({ getText, save, onFocus }) {
           rows={numberOfLines + 3}
           onFocus={() => { onFocus(); setBlurred(false); }}
         />
-      </div>
+      </div>}
     </div>
   )
 }

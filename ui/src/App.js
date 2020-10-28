@@ -16,9 +16,9 @@ function App() {
         <Route exact path="/">
           <Redirect to="/recipes" />
         </Route>
-        <Route exact path="/recipes" component={pageWrapper({ sectionTitle: "My Recipes", children: RecipesPage })} />
-        <Route exact path="/recipes/:name" component={pageWrapper({ sectionTitle: "My Recipes", children: ViewRecipe })} />
-        <Route path="/notes" component={pageWrapper({ sectionTitle: "My Notes", children: Notes })} />
+        <Route exact path="/recipes" component={pageWrapper({ sectionTitle: "Recipes", children: RecipesPage })} />
+        <Route exact path="/recipes/:name" component={pageWrapper({ sectionTitle: "Recipes", children: ViewRecipe })} />
+        <Route path="/notes" component={pageWrapper({ sectionTitle: "Engineering Cheatsheet", children: Notes })} />
         <Route exact path="/logout" component={Logout} />
         <Route component={NoMatch} />
       </Switch>

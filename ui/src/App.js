@@ -7,6 +7,7 @@ import Notes from "./Pages/Notes";
 import Header from "./Components/Header";
 import './App.less'
 import "./styles.scss";
+import Profile from "./Pages/Profile";
 const { Content } = Layout;
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Route exact path="/">
           <Redirect to="/recipes" />
         </Route>
+        <Route exact path="/profile" component={pageWrapper({sectionTitle: "Emma Corbett", children: Profile})} />
         <Route exact path="/recipes" component={pageWrapper({ sectionTitle: "Recipes", children: RecipesPage })} />
         <Route exact path="/recipes/:name" component={pageWrapper({ sectionTitle: "Recipes", children: ViewRecipe })} />
         <Route path="/notes" component={pageWrapper({ sectionTitle: "Engineering Cheatsheet", children: Notes })} />

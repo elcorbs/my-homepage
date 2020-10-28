@@ -12,7 +12,7 @@ export default function Header({ title }) {
       <div className="header-content">
         <LoginForm cb={setLoggedIn} />
         <div className="site-navigation">
-          <Link to="/">About Me</Link>
+          <Link to="/profile">About Me</Link>
           <Link to="/recipes">Recipes</Link>
           <Link to="/notes">Notes</Link>
           {loggedIn && <a href="/logout">Logout</a>}

@@ -119,6 +119,8 @@ function Editor({ getText, save, onFocus }) {
       <div dangerouslySetInnerHTML={{ __html: formatText() }} className="notes-formatted" />
       {isLoggedIn() && <div>
         <textarea
+          spellcheck="false"
+          data-gramm_editor="false"
           value={text}
           onChange={(e) => setText(e.target.value)}
           className="notes-input"

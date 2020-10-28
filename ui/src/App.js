@@ -42,7 +42,7 @@ function pageWrapper({ sectionTitle, children }) {
       <Header className="app-header">
         <h1 style={{ color: "#9d646e" }}>{sectionTitle}</h1>
         <div className="header-content">
-          <LoginForm cb={setLoggedIn}/>
+          <LoginForm cb={setLoggedIn} />
           <div className="site-navigation">
             <Link to="/">About Me</Link>
             <Link to="/recipes">Recipes</Link>
@@ -60,7 +60,7 @@ function pageWrapper({ sectionTitle, children }) {
   }
 }
 
-function LoginForm({cb}) {
+function LoginForm({ cb }) {
   const [username, setUsename] = useState(null);
   const [password, setPassword] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
@@ -104,7 +104,5 @@ function LoginForm({cb}) {
     </div>
   )
 }
-
-
 
 export default App;

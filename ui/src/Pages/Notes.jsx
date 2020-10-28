@@ -109,7 +109,7 @@ function Editor({ getText, save, onFocus }) {
       openLinksInNewWindow: true
     });
     const html = convertor.makeHtml(text);
-    return xss(html);
+    return html;
   }
 
   const numberOfLines = text ? text.split('\n').length : 0;

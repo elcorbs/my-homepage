@@ -9,6 +9,7 @@ import { Switch, Route, Link, Redirect } from "react-router-dom";
 import { Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { isLoggedIn } from "../Utilities/helper-functions";
+import parse from 'html-react-parser';
 
 export default function Notes({ history }) {
   const [noteTitles, setNotesTitles] = useState([]);
@@ -100,7 +101,7 @@ function Editor({ getText, save, onFocus }) {
   }, [getText]);
 
   const formatText = () => {
-    if (!blurred && isLoggedIn()) return null;
+    if (!blurred && isLoggedIn()) return "";
     const convertor = new Converter({
       simpleLineBreaks: true,
       simplifiedAutoLink: true,
@@ -116,7 +117,9 @@ function Editor({ getText, save, onFocus }) {
 
   return (
     <div>
-      <div dangerouslySetInnerHTML={{ __html: formatText() }} className="notes-formatted" />
+      <div className="notes-formatted" >
+        {parse(formatText())}
+      </div>
       {isLoggedIn() && <div>
         <textarea
           spellcheck="false"

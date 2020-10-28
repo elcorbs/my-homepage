@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "html-react-parser": "^0.14.0",
     "serverless-dynamodb-client": "0.0.2",
     "serverless-finch": "^2.5.2"
   }

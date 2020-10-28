@@ -1,0 +1,27 @@
+@import "../../variables.scss";
+
+.login-form-item {
+  margin: 3px;
+}
+
+.login-form-container {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  margin: 0 5px;
+  padding-bottom: 10px; 
+  max-width: 430px;
+  margin-right: 0px;
+  margin-left: auto;
+}
+.error-message {
+  text-align: right;
+  line-height: 20px;
+  color: #f60a0a;
+}
+
+@media screen and (min-width:320px) and (max-width:640px) {
+  .login-form-container {
+    flex-wrap: wrap;
+  }
+}

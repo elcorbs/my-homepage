@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { login } from "./../Gateway/query-recipes";
 import { Button, Input } from "antd";
+import "./loginForm.scss";
 
 export default function LoginForm({ cb }) {
   const [username, setUsename] = useState(null);
@@ -23,17 +24,17 @@ export default function LoginForm({ cb }) {
 
   if (loggedIn) return null;
 
-  return (
-    <div className={"login-form-container"} style={{ textAlign: "center", margin: "0 5px", paddingBottom: "10px" }} >
-      {errorMessage}
+  return (<>
+  {errorMessage && <div className="error-message">{errorMessage}</div>}
+    <div className={"login-form-container"} >
       <Input
-        placeholder="Enter your username"
+        placeholder="Username"
         prefix={<UserOutlined className="site-form-item-icon" />}
         onChange={value => setUsename(value.target.value)}
         className={"login-form-item"}
       />
       <Input.Password
-        placeholder="Enter your password"
+        placeholder="Password"
         prefix={<LockOutlined />}
         onChange={value => setPassword(value.target.value)}
         className={"login-form-item"}
@@ -46,5 +47,5 @@ export default function LoginForm({ cb }) {
         Login
       </Button>
     </div>
-  )
+  </>)
 }

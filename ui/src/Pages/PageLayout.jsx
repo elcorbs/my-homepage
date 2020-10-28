@@ -1,6 +1,7 @@
 import React from "react";
 import BreadcrumbNavigator from "../Components/BreadcrumbNavigator";
 import { Layout } from "antd";
+import "./pageLayout.scss";
 const { Content, Sider } = Layout;
 
 export default function PageLayout({ sideBarContent, path, children }) {
@@ -9,9 +10,8 @@ export default function PageLayout({ sideBarContent, path, children }) {
       <div className="breadcrumb-container">
         <BreadcrumbNavigator path={path} />
       </div>
-      <Layout style={{ flexWrap: "wrap" }}>
+      <Layout className="main-content">
         {sideBarContent && <Sider
-          theme="light"
           className="panel"
         >
           {sideBarContent}

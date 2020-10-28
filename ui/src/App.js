@@ -16,7 +16,8 @@ function App() {
         </Route>
         <Route exact path="/recipes" component={pageWrapper({ sectionTitle: "My Recipes", children: RecipesPage })} />
         <Route exact path="/recipes/:name" component={pageWrapper({ sectionTitle: "My Recipes", children: ViewRecipe })} />
-        <Route exact path="/notes" component={pageWrapper({ sectionTitle: "My Notes", children: Notes })} />
+
+        <Route path="/notes" component={pageWrapper({ sectionTitle: "My Notes", children: Notes })} />
       </Switch>
     </main>
   );
@@ -24,9 +25,9 @@ function App() {
 
 function pageWrapper({ sectionTitle, children }) {
   return (props) => (
-    <Layout className="layout">
-      <Header style={{ background: "#002329" }}>
-        <h1 style={{ color: "white" }}>{sectionTitle}</h1>
+    <Layout className="layout" >
+      <Header style={{ background: "white" }}>
+        <h1 style={{ color: "#9d646e" }}>{sectionTitle}</h1>
       </Header>
       <Content className="main-content" >
         <div className="site-layout-content">

@@ -1,3 +1,5 @@
+@import "../variables.scss";
+
 @media screen and (min-width:320px) and (max-width:640px) {
   .main-content {
     padding: 0px 11px;
@@ -8,4 +10,18 @@
   .main-content {
     padding: 0px 50px;
   }
+}
+
+.layout {
+  background-color: $background-color;
+}
+a {
+    background-image:linear-gradient(120deg, $link-underline-color 0%, $link-underline-color 100%)  !important;
+    background-repeat: no-repeat;
+    background-size: 100% 0.2em !important;
+    background-position: 0 88% !important;
+    transition: background-size 0.15s ease-in !important;
+    &:hover {
+      background-size: 100% 88% !important;
+    }
 }

@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { getCuisinesFromRecipes, getUsername } from "../Utilities/helper-functions";
 import { StarFilled, PushpinOutlined } from "@ant-design/icons"
-import "./styles.scss";
+import "./recipesList.scss";
 
 export default function RecipeList({ recipes }) {
   const cuisines = getCuisinesFromRecipes(recipes);

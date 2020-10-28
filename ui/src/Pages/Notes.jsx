@@ -1,47 +1,86 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import "./notes.scss";
-import { getNotes, editNote, getNote } from "./../Gateway/query-notes";
+import { getNotes, saveNote, getNote, deleteNote } from "./../Gateway/query-notes";
 import { Converter } from "showdown";
 import xss from "xss";
 import PageLayout from "./PageLayout";
+import { Switch, Route, Link, Redirect } from "react-router-dom";
+import { Button } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 
-export default function Notes() {
-  const [saveError, toggleSaveError] = useState(false);
-  const [noteTitles, setNotesTitles] = useState(['Untitled Note']);
+export default function Notes({ history }) {
+  const [noteTitles, setNotesTitles] = useState([]);
+
   useEffect(() => {
+    console.log("re-get notes")
     const getAndSetNotes = async () => {
       const notes = await getNotes();
       const titles = notes.map(note => note.title);
       setNotesTitles(titles)
     }
     getAndSetNotes();
-  }, []);
+  }, [history.location]);
 
-  const save = async (title, note) => {
-    const lines = note.split('\n');
-    lines.splice(0, 1);
-
-    const response = await editNote(title, lines.join('\n'));
-    if (!response) toggleSaveError(true);
+  const addNewNote = async () => {
+    const response = await saveNote("Untitled Note", "");
+    if (response) {
+      history.push("/notes/Untitled%20Note")
+    }
   }
 
   return (
-    <PageLayout path={["notes"]} sideBarContent={<NoteTitleList titles={noteTitles}/>} >
-      <div style={{ flex: '4 1 auto' }}>
-        <Editor getText={async () => await getNote('Emmas notes')} save={(note) => save('Emmas notes', note)} onFocus={() => toggleSaveError(false)} />
-        <ErrorMark error={saveError} />
-      </div>
+    <PageLayout path={["notes"]} sideBarContent={<NoteTitleList titles={noteTitles} newNote={addNewNote} />} >
+      <Switch>
+        <Route exact path="/notes">
+          {noteTitles[0] && <Redirect to={`/notes/${noteTitles[0]}`} />}
+        </Route>
+        <Route exact path="/notes/:title" component={(props) => <NoteContent {...props} />} />
+      </Switch>
     </PageLayout>
   )
 }
 
-function NoteTitleList({titles}) {
-  return titles.map(title => {
-    return <button key={title} className="note-title-button" >
-      {title}
-    </button>
-  })
+function NoteContent({ match, history }) {
+  const title = match.params.title;
+  const [saveError, toggleSaveError] = useState(false);
+
+  const save = async (title, note) => {
+    const lines = note.split('\n');
+    const newTitle = lines.splice(0, 1)[0].replace('#', '');
+    const response = await saveNote(newTitle, lines.join('\n'));
+
+    if (!response) toggleSaveError(true);
+    if (title !== newTitle) {
+      await deleteNote(title);
+      history.push(`/notes/${newTitle}`)
+    }
+  }
+
+  const get = async () => {
+    const text = await getNote(title)
+    return `#${title || ""}\n` + text;
+  }
+
+  return (
+    <div style={{ flex: '4 1 auto' }}>
+      <Editor getText={get} save={(note) => save(title, note)} onFocus={() => toggleSaveError(false)} />
+      <ErrorMark error={saveError} />
+    </div>
+  )
+}
+
+function NoteTitleList({ titles, newNote }) {
+  return (
+    <div className="notes-title-container">
+      <div style={{display: 'flex', justifyContent:'flex-end'}} >
+        <Button onClick={newNote} style={{ backgroundColor: "transparent", marginRight: '10px' }} size="small" icon={<PlusOutlined />} />
+      </div>
+      {titles.map(title => {
+        return <div key={title}> <Link to={`/notes/${title}`} className="note-title-button">{title}</Link></div>
+      })}
+    </div>
+  )
 }
 
 function Editor({ getText, save, onFocus }) {

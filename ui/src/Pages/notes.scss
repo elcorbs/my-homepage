@@ -1,3 +1,5 @@
+@import "./../../variables.scss";
+
 .notes-input {
   min-height: 200px;
   min-width: 100%;
@@ -8,6 +10,7 @@
 
   &:focus-within, &:focus {
     border-width: 1px;
+    outline-color: $main-header-color !important;
     border-style: solid;
     border-color: -internal-light-dark(rgb(118, 118, 118), rgb(133, 133, 133));
     border-image: initial;
@@ -29,6 +32,8 @@
   text-align: right;
 }
 
-.note-title-button {
-
+.new-note-input {
+   background-color: transparent;
+   border: none;
+   outline-color: $main-header-color !important;
 }

@@ -1,4 +1,4 @@
-import "./styles.scss"
+import "./recipesList.scss"
 import React from "react";
 import { Button } from "antd";
 

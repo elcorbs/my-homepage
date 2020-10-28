@@ -80,3 +80,26 @@ module.exports.updateNotes = (title, notes) => {
       );
   });
 }
+
+module.exports.deleteNote = (title) => {
+  const params = {
+    TableName: process.env.DYNAMO_TABLE,
+    Key: {
+      'Name': title,
+      'Category': 'NOTES'
+    },
+  };
+  console.log("deleting notes from db with params", params)
+  return new Promise((resolve, reject) => {
+    database
+      .delete(params, function (err) {
+        if (err) {
+          console.log(`There was an error deleting this note from db`, err);
+          return reject(err);
+        }
+        console.log("Note successfully deleted")
+        return resolve(title);
+      }
+      );
+  })
+};

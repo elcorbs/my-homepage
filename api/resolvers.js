@@ -9,7 +9,8 @@ const {
 const {
   getNotes,
   updateNotes,
-  getNote
+  getNote,
+  deleteNote
 } = require("./notesGateway");
 const { login, signup, authenticateUser } = require("./authentication");
 
@@ -45,7 +46,7 @@ const recipeToDbEntity = (recipe) => ({
     Name: i.name,
     Amount: i.amount,
     Measurement: i.measurement,
-    Optional: i.optional 
+    Optional: i.optional
   })) : undefined
 })
 
@@ -59,12 +60,13 @@ module.exports.resolvers = {
   recipes: () => getRecipes().then(data => data.map(recipe => recipeToResponse(recipe))),
   addRecipe: (args, context) => authenticateUser(context, args, ({ input }) => addRecipe(recipeToDbEntity(input))).then(data => recipeToResponse(data)),
   repeatableValues: () => getStoredValues().then(data => data),
-  removeRecipe: (args, context) =>  authenticateUser(context, args, ({name}) => deleteRecipe(name)).then(data => data),
+  removeRecipe: (args, context) => authenticateUser(context, args, ({ name }) => deleteRecipe(name)).then(data => data),
   toggleWantToTry: ({ name, flag }) => toggleValue(name, "WantToTry", flag).then(data => data),
   toggleEatingNext: ({ name, flag }) => toggleValue(name, "Pinned", flag).then(data => data),
   login: ({ username, password }) => login(username, password).then(data => data),
   signup: ({ username, password }) => signup(username, password).then(data => data),
   notes: () => getNotes().then(data => data.map(note => noteToResponse(note))),
-  note: ({title}) => getNote(title).then(data => noteToResponse(data)),
-  saveNote: ({title, notes}) => updateNotes(title, notes).then(data => data)
+  note: ({ title }) => getNote(title).then(data => noteToResponse(data)),
+  saveNote: ({ title, notes }) => updateNotes(title, notes).then(data => data),
+  removeNote: ({ title }) => deleteNote(title).then(data => data)
 }

@@ -11,8 +11,13 @@ export async function getNote(title){
   const response = await queryApi(schema);
   return response.note.text;
 }
+export async function deleteNote(title){
+  const deleteSchema = `mutation {removeNote(title: "${title}")}`;
+  const response = await queryApi(deleteSchema);
+  return response.removeNote;
+}
 
-export async function editNote(title, note) {
+export async function saveNote(title, note) {
   const schema = `mutation {saveNote(title: "${title}" ,notes: """${note}""")}`
   return await queryApi(schema);
 }

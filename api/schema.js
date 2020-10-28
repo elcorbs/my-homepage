@@ -15,6 +15,7 @@ module.exports.schema =
       login(username: String!, password: String!): AuthPayload
       signup(username: String!, password: String!): AuthPayload
       saveNote(title: String, notes: String): String
+      removeNote(title: String): String
     }
     type Note {
       title: String

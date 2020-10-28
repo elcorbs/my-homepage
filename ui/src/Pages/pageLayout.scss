@@ -1,0 +1,17 @@
+@import "../../variables.scss";
+
+.main-content {
+  background-color: $background-color !important;
+  flex-wrap: wrap;
+}
+
+.panel {
+  background-color: $background-color !important;
+}
+
+.breadcrumbs {
+  margin: 16px 0 !important;
+  & a {
+    background: none !important;
+  }
+}

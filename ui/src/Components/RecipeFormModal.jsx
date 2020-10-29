@@ -10,7 +10,7 @@ import { getStoredIngredients } from "../Gateway/query-recipes";
 const { TextArea } = Input;
 
 export default function RecipeFormModal({ closeModal, submitForm, cuisines, recipe }) {
-  const [storedIngredients, setStoredIngredients] = useState({ ingredients: [], measures: [] })
+  const [storedIngredients, setStoredIngredients] = useState(null)
   const [usingLink, useLink] = useState(recipe && recipe.recipeLink != null)
   useEffect(() => {
     getStoredIngredients(setStoredIngredients)
@@ -45,43 +45,44 @@ export default function RecipeFormModal({ closeModal, submitForm, cuisines, reci
       width={700}
       onCancel={closeModal}
     >
-      <Form
-        {...layout}
-        name="basic"
-        initialValues={{ ...recipe }}
-        onFinish={recipe => submitForm(removeHiddenValues(recipe))}
-        colon={false}
-        layout="vertical"
-      >
-        <Form.Item
-          name="name"
-          rules={[{ required: true, message: 'Please enter the recipe name' }]}
+      {storedIngredients &&
+        <Form
+          {...layout}
+          name="basic"
+          initialValues={{ ...recipe }}
+          onFinish={recipe => submitForm(removeHiddenValues(recipe))}
+          colon={false}
+          layout="vertical"
         >
-          <Input placeholder="Name" disabled={recipe ? true : false} />
-        </Form.Item>
-        <MealTypeFormItem />
-        <SelectorWithAdd
-          options={cuisines}
-          placeholder={"Select a cuisine"}
-          formProps={{
-            name: "cuisine",
-          }}
-        />
-        <SwitchWithLabel initialValue={usingLink} onChange={useLink} />
-        {
-          usingLink
-            ? <LinkRecipe />
-            : <ManualRecipeEntry storedIngredients={storedIngredients} />
-        }
-        <Form.Item name="notes" >
-          <TextArea rows={4} placeholder="Notes" />
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit">
-            {recipe ? "Edit" : "Add"} Recipe
+          <Form.Item
+            name="name"
+            rules={[{ required: true, message: 'Please enter the recipe name' }]}
+          >
+            <Input placeholder="Name" disabled={recipe ? true : false} />
+          </Form.Item>
+          <MealTypeFormItem />
+          <SelectorWithAdd
+            options={cuisines}
+            placeholder={"Select a cuisine"}
+            formProps={{
+              name: "cuisine",
+            }}
+          />
+          <SwitchWithLabel initialValue={usingLink} onChange={useLink} />
+          {
+            usingLink
+              ? <LinkRecipe />
+              : <ManualRecipeEntry storedIngredients={storedIngredients} />
+          }
+          <Form.Item name="notes" >
+            <TextArea rows={4} placeholder="Notes" />
+          </Form.Item>
+          <Form.Item>
+            <Button type="primary" htmlType="submit">
+              {recipe ? "Edit" : "Add"} Recipe
         </Button>
-        </Form.Item>
-      </Form>
+          </Form.Item>
+        </Form>}
     </Modal>
   )
 }
@@ -99,7 +100,7 @@ function ManualRecipeEntry({ storedIngredients }) {
       <Form.Item
         name="servings"
       >
-        <InputNumber style={{minWidth: '122px' }} type="number" min={0} step={1} placeholder={"No. of servings"} />
+        <InputNumber style={{ minWidth: '122px' }} type="number" min={0} step={1} placeholder={"No. of servings"} />
       </Form.Item>
       <IngredientsList ingredients={storedIngredients.ingredients} measures={storedIngredients.measures} />
       <Method />

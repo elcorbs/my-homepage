@@ -24,6 +24,7 @@ export default function RecipeFormModal({ closeModal, submitForm, cuisines, reci
     } else {
       recipe.recipeLink = undefined
     }
+
     return recipe;
   }
 
@@ -47,7 +48,7 @@ export default function RecipeFormModal({ closeModal, submitForm, cuisines, reci
       <Form
         {...layout}
         name="basic"
-        initialValues={{ remember: true, ...recipe }}
+        initialValues={{ ...recipe }}
         onFinish={recipe => submitForm(removeHiddenValues(recipe))}
         colon={false}
         layout="vertical"

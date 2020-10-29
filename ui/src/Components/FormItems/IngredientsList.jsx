@@ -48,6 +48,7 @@ export default function IngredientsList({ measures, ingredients }) {
                   name={[field.name, 'optional']}
                   fieldKey={[field.fieldKey, 'optional']}
                   valuePropName='checked'
+                  initialValue={false}
                 >
                   <Checkbox>Optional </Checkbox>
                 </Form.Item>

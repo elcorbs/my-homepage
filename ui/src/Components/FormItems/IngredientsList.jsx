@@ -61,7 +61,7 @@ export default function IngredientsList({ measures, ingredients }) {
             <Form.Item>
               <Button
                 type="dashed"
-                onClick={() => add()}
+                onClick={() => add({})}
                 block
               >
                 <PlusOutlined /> Add Ingredient

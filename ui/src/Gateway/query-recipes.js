@@ -52,18 +52,21 @@ export async function login(name, password, callback){
   })
 }
 
+function mapIngredientToStringLiteral(ingredient) {
+  if(!ingredient.name && !ingredient.amount && !ingredient.measurement) return "";
+  const name = ingredient.name ? `name: "${ingredient.name}"` : "";
+  const amount = ingredient.amount ? `, amount: ${ingredient.amount}` : "";
+  const measurement = ingredient.measurement ? `, measurement: "${ingredient.measurement}"` : "";
+  return '{' + name + amount + measurement  + ', optional: '  + ingredient.optional + '}'; 
+}
+
 function mapRecipeToQueryStringLiteral(recipe){
   return `{
     name: "${recipe.name}",
     ${getKeyValue(recipe, "cuisine")}
     ${recipe.servings ? `servings: ${recipe.servings},` : ""}
     ${recipe.ingredients
-      ? `ingredients: [${recipe.ingredients.map(i => `{
-          name: "${i.name}"
-          ${i.amount ? `, amount: ${i.amount}` : ""}
-          ${i.measurement ? `, measurement:"${i.measurement}"` : ""}
-          , optional: ${i.optional} }
-        `)}],`
+      ? `ingredients: [${recipe.ingredients.map(i => mapIngredientToStringLiteral(i))}],`
       : "" }
     ${recipe.method ? `method: [${recipe.method.map(step => formatString(step))}],` : "" }
     ${getKeyValue(recipe, "notes")}

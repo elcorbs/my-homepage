@@ -11,6 +11,8 @@ export default function IngredientsList({ measures, ingredients }) {
           <div>
             {fields.map(field => (
               <Space className="list-input" key={field.key} align="start">
+                <div className="main-ingredients-line">
+
                 <Form.Item
                   {...field}
                   className="small-ingredient-item"
@@ -20,18 +22,17 @@ export default function IngredientsList({ measures, ingredients }) {
                   <InputNumber min={0} step={0.01} placeholder="#" />
                 </Form.Item>
                 <SelectorWithAdd
-                  className="large-ingredient-item"
                   options={measures}
                   placeholder={"Measure"}
                   selectorClassName = "measure-selector"
                   formProps={{
                     ...field,
                     name: [field.name, "measurement"],
-                    fieldKey: [field.fieldKey, "measurement"]
+                    fieldKey: [field.fieldKey, "measurement"],
+                    className: "large-ingredient-item"
                   }}
                 />
                 <SelectorWithAdd
-                  className="large-ingredient-item"
                   options={ingredients}
                   placeholder={"Ingredient"}
                   selectorClassName = "ingredient-selector"
@@ -39,9 +40,12 @@ export default function IngredientsList({ measures, ingredients }) {
                     ...field,
                     name: [field.name, "name"],
                     fieldKey: [field.fieldKey, "name"],
+                    className: "large-ingredient-item",
                     rules: [{ requied: true, message: "Please enter the ingredient" }]
                   }}
                 />
+                </div>
+                <div className="upper-ingredients-line" >
                 <Form.Item
                   {...field}
                   className="optional-ingredient-checkbox"
@@ -56,6 +60,7 @@ export default function IngredientsList({ measures, ingredients }) {
                   style={{color: '#e41818'}}
                   onClick={() => remove(field.name)} className="ingredient-remove-icon"
                 />
+                </div>
               </Space>
             ))}
             <Form.Item>

@@ -60,7 +60,6 @@ export default function ViewRecipe(props) {
         <RecipeFormModal
           closeModal={closeModal}
           submitForm={submitEdit}
-          cuisines={[recipe.cuisine]}
           recipe={recipe}
         />
       }

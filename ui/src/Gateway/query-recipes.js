@@ -28,7 +28,7 @@ export async function removeRecipe(name, callback){
 }
 
 export async function getStoredIngredients(callback){
-  const schema = `query {repeatableValues { measures, ingredients } }`;
+  const schema = `query {repeatableValues { measures, ingredients, cuisines } }`;
   await queryApi(schema, data => callback(data.repeatableValues))
 }
 

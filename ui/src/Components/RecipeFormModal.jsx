@@ -9,7 +9,7 @@ import { useState, useEffect } from "react";
 import { getStoredIngredients } from "../Gateway/query-recipes";
 const { TextArea } = Input;
 
-export default function RecipeFormModal({ closeModal, submitForm, cuisines, recipe }) {
+export default function RecipeFormModal({ closeModal, submitForm, recipe }) {
   const [storedIngredients, setStoredIngredients] = useState(null)
   const [usingLink, useLink] = useState(recipe && recipe.recipeLink != null)
   useEffect(() => {
@@ -62,7 +62,7 @@ export default function RecipeFormModal({ closeModal, submitForm, cuisines, reci
           </Form.Item>
           <MealTypeFormItem />
           <SelectorWithAdd
-            options={cuisines}
+            options={storedIngredients.cuisines}
             placeholder={"Select a cuisine"}
             formProps={{
               name: "cuisine",

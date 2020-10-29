@@ -3,7 +3,6 @@ import { getRecipes, addRecipe } from "../Gateway/query-recipes";
 import RecipeFormModal from "../Components/RecipeFormModal";
 import RecipeList from "../Components/RecipeList";
 import Filters from "../Components/FilterRecipesPanel";
-import { getCuisinesFromRecipes } from "../Utilities/helper-functions";
 import PageLayout from "./PageLayout";
 import "./recipesPage.scss";
 
@@ -15,7 +14,6 @@ export default function RecipesPage() {
     getRecipes(r => { setRecipes(r); setFilteredRecipes(r); })
   }, [])
   if (recipes.length === 0) { return <div /> }
-  const cuisines = getCuisinesFromRecipes(recipes);
   const openForm = () => openRecipeForm(true);
   const closeForm = () => openRecipeForm(false);
   const recipeAdded = (newRecipe) => {
@@ -52,7 +50,6 @@ export default function RecipesPage() {
         <RecipeFormModal
           closeModal={closeForm}
           submitForm={submitForm}
-          cuisines={cuisines}
         />
       )}
       <PageLayout sideBarContent={FilterSideBar} path={["recipes"]}>

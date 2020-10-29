@@ -1,18 +1,18 @@
 const {
   getRecipeByName,
   getRecipes,
-  addRecipe,
   getStoredValues,
   deleteRecipe,
   toggleValue,
-} = require("./recipesGateway");
+} = require("../Gateways/recipesGateway");
 const {
   getNotes,
   updateNotes,
   getNote,
   deleteNote
-} = require("./notesGateway");
-const { login, signup, authenticateUser } = require("./authentication");
+} = require("../Gateways/notesGateway");
+const saveRecipe = require("../Usecases/saveRecipe");
+const { login, signup, authenticateUser } = require("../Usecases/authentication");
 
 const recipeToResponse = (recipe) => ({
   name: recipe.Name,
@@ -32,23 +32,6 @@ const recipeToResponse = (recipe) => ({
   })) : []
 });
 
-const recipeToDbEntity = (recipe) => ({
-  Name: recipe.name,
-  Cuisine: recipe.cuisine,
-  Method: recipe.method,
-  Servings: recipe.servings,
-  Type: recipe.type,
-  Notes: recipe.notes,
-  RecipeLink: recipe.recipeLink,
-  WantToTry: recipe.wantToTry,
-  Pinned: recipe.pinned,
-  Ingredients: recipe.ingredients ? recipe.ingredients.map(i => ({
-    Name: i.name,
-    Amount: i.amount,
-    Measurement: i.measurement,
-    Optional: i.optional
-  })) : undefined
-})
 
 const noteToResponse = (note) => ({
   title: note.Name,
@@ -58,7 +41,7 @@ const noteToResponse = (note) => ({
 module.exports.resolvers = {
   recipe: ({ name }) => getRecipeByName(name).then(data => recipeToResponse(data)),
   recipes: () => getRecipes().then(data => data.map(recipe => recipeToResponse(recipe))),
-  addRecipe: (args, context) => authenticateUser(context, args, ({ input }) => addRecipe(recipeToDbEntity(input))).then(data => recipeToResponse(data)),
+  addRecipe: (args, context) => authenticateUser(context, args, ({ input }) => saveRecipe.execute(input)).then(data => recipeToResponse(data)),
   repeatableValues: () => getStoredValues().then(data => data),
   removeRecipe: (args, context) => authenticateUser(context, args, ({ name }) => deleteRecipe(name)).then(data => data),
   toggleWantToTry: ({ name, flag }) => toggleValue(name, "WantToTry", flag).then(data => data),

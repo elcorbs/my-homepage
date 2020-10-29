@@ -8,6 +8,7 @@ provider:
   region: eu-west-2
   name: aws
   environment:
+    PICTURES_BUCKET: ${self:provider.custom.picture-bucket-name}
     DYNAMO_TABLE: ${self:service}-storage
     APP_SECRET: ${ssm:/${self:service}-api/APP_SECRET}
     REACT_APP_API_URL: https://6lac5t2w1i.execute-api.eu-west-2.amazonaws.com/production/query
@@ -36,6 +37,10 @@ provider:
           - - "arn:aws:s3:::"
             - "Ref" : "ServerlessDeploymentBucket"
             - "/*"
+    - Effect: "Allow"
+      Action:
+        - "s3:*"
+      Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "${self:provider.custom.picture-bucket-name}" } ] ]  } 
 package:
   exclude:
     - ui/**
@@ -74,7 +79,12 @@ resources:
       Type: AWS::S3::Bucket
       Properties:
         BucketName: "emma-corbett.me.uk"
+    photoStorage:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: "${self:provider.custom.picture-bucket-name}"
 custom:
+  picture-bucket-name: "emmas-recipes-pictures"
   serverless-offline:
     httpPort: 5000
   client:

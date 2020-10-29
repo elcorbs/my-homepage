@@ -1,4 +1,4 @@
-const { getUser, addUser } = require("./recipesGateway");
+const { getUser, addUser } = require("../Gateways/recipesGateway");
 const { hash, compare } = require('bcryptjs');
 const { sign, verify } = require('jsonwebtoken');
 

@@ -19,7 +19,7 @@ deploy: build-api build-ui deploy-api deploy-ui
  
 .PHONY: serve-ui
 serve-ui:
-	cd ui && REACT_APP_API_URL="https://6lac5t2w1i.execute-api.eu-west-2.amazonaws.com/production/query" npm run start
+	cd ui && REACT_APP_API_URL="http://localhost:5000/dev/query" npm run start
 
 .PHONY: serve-api
 serve-api:

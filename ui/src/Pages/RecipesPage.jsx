@@ -5,6 +5,7 @@ import RecipeList from "../Components/RecipeList";
 import Filters from "../Components/FilterRecipesPanel";
 import PageLayout from "./PageLayout";
 import "./recipesPage.scss";
+import PictureUpload from "../Components/PictureUpload";
 
 export default function RecipesPage() {
   const [recipes, setRecipes] = useState([]);
@@ -53,6 +54,7 @@ export default function RecipesPage() {
         />
       )}
       <PageLayout sideBarContent={FilterSideBar} path={["recipes"]}>
+        <PictureUpload />
         <RecipeList recipes={filteredRecipes} />
       </PageLayout>
     </div>

@@ -4,15 +4,16 @@ const {
   getStoredValues,
   deleteRecipe,
   toggleValue,
-} = require("../Gateways/recipesGateway");
+} = require("../gateways/recipesGateway");
 const {
   getNotes,
   updateNotes,
   getNote,
   deleteNote
-} = require("../Gateways/notesGateway");
-const saveRecipe = require("../Usecases/saveRecipe");
-const { login, signup, authenticateUser } = require("../Usecases/authentication");
+} = require("../gateways/notesGateway");
+const saveRecipe = require("../usecases/saveRecipe");
+const { login, signup, authenticateUser } = require("../usecases/authentication");
+const { getPreSignedUrl } = require("../Gateways/picturesGateway");
 
 const recipeToResponse = (recipe) => ({
   name: recipe.Name,
@@ -32,7 +33,6 @@ const recipeToResponse = (recipe) => ({
   })) : []
 });
 
-
 const noteToResponse = (note) => ({
   title: note.Name,
   text: note.Data
@@ -51,5 +51,6 @@ module.exports.resolvers = {
   notes: () => getNotes().then(data => data.map(note => noteToResponse(note))),
   note: ({ title }) => getNote(title).then(data => noteToResponse(data)),
   saveNote: (args, context) => authenticateUser(context, args, ({ title, notes }) => updateNotes(title, notes)).then(data => data),
-  removeNote: (args, context) => authenticateUser(context, args, ({ title }) => deleteNote(title)).then(data => data)
+  removeNote: (args, context) => authenticateUser(context, args, ({ title }) => deleteNote(title)).then(data => data),
+  pictureUrl: ({recipeName}) => getPreSignedUrl(recipeName).then(url => url)
 }

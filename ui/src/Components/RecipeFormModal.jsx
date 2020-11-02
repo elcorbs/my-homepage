@@ -66,6 +66,7 @@ export default function RecipeFormModal({ closeModal, submitForm, recipe }) {
             placeholder={"Select a cuisine"}
             formProps={{
               name: "cuisine",
+              rules: [{required: true, message: 'Please select a cuisine'}]
             }}
           />
           <SwitchWithLabel initialValue={usingLink} onChange={useLink} />

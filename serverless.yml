@@ -2,13 +2,14 @@ plugins:
   - serverless-dynamodb-local
   - serverless-offline
   - serverless-finch
+  - serverless-s3-local
 service: my-homepage
 provider:
   stage: ${opt:stage}
   region: eu-west-2
   name: aws
   environment:
-    PICTURES_BUCKET: ${self:provider.custom.picture-bucket-name}
+    PICTURES_BUCKET: ${self:custom.picture-bucket-name}
     DYNAMO_TABLE: ${self:service}-storage
     APP_SECRET: ${ssm:/${self:service}-api/APP_SECRET}
     REACT_APP_API_URL: https://6lac5t2w1i.execute-api.eu-west-2.amazonaws.com/production/query
@@ -40,7 +41,7 @@ provider:
     - Effect: "Allow"
       Action:
         - "s3:*"
-      Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "${self:provider.custom.picture-bucket-name}" } ] ]  } 
+      Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "${self:custom.picture-bucket-name}" } ] ]  } 
 package:
   exclude:
     - ui/**
@@ -49,7 +50,7 @@ package:
 functions:
   recipesAPI:
     name: ${self:service}-recipesAPI
-    handler: api/handler.query
+    handler: api/boundary/handler.query
     cors: true
     events:
       - http:
@@ -82,7 +83,15 @@ resources:
     photoStorage:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: "${self:provider.custom.picture-bucket-name}"
+        BucketName: "${self:custom.picture-bucket-name}"
+        CorsConfiguration:
+          CorsRules:
+            - AllowedMethods:
+                - PUT
+              AllowedOrigins:
+                - "*"
+              AllowedHeaders:
+                - '*'
 custom:
   picture-bucket-name: "emmas-recipes-pictures"
   serverless-offline:
@@ -92,6 +101,12 @@ custom:
     distributionFolder: ui/build
     indexDocument: index.html
     errorDocument: index.html
+  s3:
+    stage:
+      - dev
+    host: localhost
+    directory: /tmp
+
   dynamodb:
     stages: 
       - dev

@@ -47,7 +47,7 @@ module.exports.getUser = (email) => {
         }
         if (!data.Item) return resolve(null);
 
-        return resolve({name: data.Item.Name, password: data.Item.Password, adminAccess: data.Item.AdminAccess});
+        return resolve({ name: data.Item.Name, password: data.Item.Password, adminAccess: data.Item.AdminAccess });
       })
   })
 }
@@ -91,6 +91,7 @@ module.exports.addRecipe = (recipe) => {
   if (recipe.Notes) { params.Item["Notes"] = recipe.Notes }
   if (recipe.RecipeLink) { params.Item["RecipeLink"] = recipe.RecipeLink }
   if (recipe.WantToTry) { params.Item["WantToTry"] = recipe.WantToTry }
+  if (recipe.PictureUrl) { params.Item["PictureUrl"] = recipe.PictureUrl }
 
   console.log("Adding to db with params", params)
   return new Promise((resolve, reject) => {

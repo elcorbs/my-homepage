@@ -52,6 +52,13 @@ export async function login(name, password, callback){
   })
 }
 
+export async function getPictureUrl(recipeName){
+  const schema = `query {pictureUrl(recipeName: "${recipeName}")}`;
+  const response = await queryApi(schema);
+  console.log(response.pictureUrl);
+  return response.pictureUrl;
+}
+
 function mapIngredientToStringLiteral(ingredient) {
   if(!ingredient.name && !ingredient.amount && !ingredient.measurement) return "";
   const name = ingredient.name ? `name: "${ingredient.name}"` : "";
@@ -94,5 +101,20 @@ async function queryApi(query, callback) {
   const response = await fetch(url, request);
   const data = await response.json();
 
-  callback(data.data);
+  callback && callback(data.data);
+  return data.data;
+}
+
+export async function savePicture(url, file, fileType) {
+  const request = {
+    method: 'PUT',
+    headers: {
+      'Content-Type': fileType,
+      'Accept': 'image/*',
+      'Access-Control-Allow-Origin': "*"
+    }
+  }
+  console.log(request)
+  const response = await fetch(new URL(url), request);
+  return response;
 }

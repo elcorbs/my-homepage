@@ -1,5 +1,4 @@
-const { addRecipe } = require("./../Gateways/recipesGateway")
-const { savePicture } = require("./../Gateways/picturesGateway")
+const { addRecipe } = require("../gateways/recipesGateway")
 
 module.exports.execute = (input) => {
   const recipeToDbEntity = (recipe) => ({
@@ -12,13 +11,15 @@ module.exports.execute = (input) => {
     RecipeLink: recipe.recipeLink,
     WantToTry: recipe.wantToTry,
     Pinned: recipe.pinned,
+    PictureUrl: recipe.pictureUrl,
     Ingredients: recipe.ingredients ? recipe.ingredients.map(i => ({
       Name: i.name,
       Amount: i.amount,
       Measurement: i.measurement,
       Optional: i.optional
     })) : undefined
-  })
+  });
 
-  return savePicture(input.name, input.picture).then(name => addRecipe(recipeToDbEntity(input)));
+  console.log("resolved saving picture")
+  return addRecipe(recipeToDbEntity(input))
 }

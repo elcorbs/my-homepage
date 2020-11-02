@@ -1,8 +1,41 @@
 const AWS = require('aws-sdk');
-const s3 = new AWS.S3();
+let s3;
+if (process.env.STAGE == 'dev') {
+  s3 = new AWS.S3({
+    s3ForcePathStyle: true,
+    accessKeyId: 'S3RVER', // This specific key is required when working offline
+    secretAccessKey: 'S3RVER',
+    endpoint: new AWS.Endpoint('http://localhost:4569'),
+  });
+} else {
+  s3 = new AWS.S3();
+}
 AWS.config.region = "eu-west-2";
 
+module.exports.getPreSignedUrl = (recipeName) => {
+  const params = {
+    Bucket: process.env.PICTURES_BUCKET,
+    Key: recipeName + '.jpg'
+    // Expires: 60
+  };
+  console.log(`Getting presigned URL with params ${params}`)
+  return new Promise((resolve, reject) => {
+    s3.getSignedUrl('putObject', params, function (err, url) {
+      if (err) {
+        console.log(`Error getting presigned url ${err}`)
+        reject(err)
+      } else {
+        console.log(`retrieved presigned url ${url}`)
+        resolve(url)
+      }
+    });
+  })
+}
 module.exports.savePicture = (recipeName, encodedImage) => {
+  if (!encodedImage) return new Promise((rs, rj) => {
+    console.log("No picture so resolving")
+    return rs(recipeName);
+  })
   let decodedImage = Buffer.from(encodedImage, 'base64');
   const bucketName = process.env.PICTURES_BUCKET;
   const filePath = recipeName + ".jpg"
@@ -19,7 +52,7 @@ module.exports.savePicture = (recipeName, encodedImage) => {
         return reject(err);
       }
       console.log(`Picture for recipe ${recipeName} saved succesfully`)
-      return resolve(name);
+      return resolve(recipeName);
     }
     );
   });

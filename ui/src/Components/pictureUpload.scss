@@ -1,4 +1,5 @@
-.saved-picture {
-  max-height: 100%;
-  max-width: 100%;
+.upload {
+  & a {
+    background-image: none !important;
+  }
 }

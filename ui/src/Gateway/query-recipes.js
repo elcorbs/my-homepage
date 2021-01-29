@@ -52,10 +52,9 @@ export async function login(name, password, callback){
   })
 }
 
-export async function getPictureUrl(recipeName){
-  const schema = `query {pictureUrl(recipeName: "${recipeName}")}`;
+export async function getPictureUrl(recipeName, fileType){
+  const schema = `query {pictureUrl(recipeName: "${recipeName}", fileType: "${fileType}")}`;
   const response = await queryApi(schema);
-  console.log(response.pictureUrl);
   return response.pictureUrl;
 }
 
@@ -105,16 +104,14 @@ async function queryApi(query, callback) {
   return data.data;
 }
 
-export async function savePicture(url, file, fileType) {
+export async function savePicture(url, file) {
   const request = {
     method: 'PUT',
     headers: {
-      'Content-Type': fileType,
-      'Accept': 'image/*',
-      'Access-Control-Allow-Origin': "*"
-    }
+      "Content-Type": file.type,
+    },
+    body: file
   }
-  console.log(request)
   const response = await fetch(new URL(url), request);
   return response;
 }

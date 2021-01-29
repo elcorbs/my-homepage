@@ -66,7 +66,7 @@
   justify-content: flex-end;
 }
 
-@media screen and (min-width:320px) and (max-width:640px) {
+@media screen and (min-width:320px) and (max-width:830px) {
   .method-step-container {
     & .ant-form-item-control-input-content {
       display: flex;
@@ -127,7 +127,7 @@
   }
 }
 
-@media screen and (min-width:641px) {
+@media screen and (min-width:830px) {
   .method-step-container {
     & .ant-form-item-control-input-content {
       display: flex;

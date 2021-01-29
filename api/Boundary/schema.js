@@ -6,7 +6,7 @@ module.exports.schema =
       repeatableValues: ListTypes
       notes: [Note]
       note(title: String): Note
-      pictureUrl(recipeName: String): String
+      pictureUrl(recipeName: String, fileType: String): String
     }
     type Mutation {
       addRecipe(input: RecipeInput): Recipe

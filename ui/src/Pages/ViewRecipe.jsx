@@ -8,6 +8,7 @@ import { Redirect } from "react-router-dom";
 import "./viewRecipePage.scss"
 import IconButton from "../Components/IconButton";
 import { getUsername, isAdmin } from "../Utilities/helper-functions";
+import PictureUpload from "../Components/PictureUpload";
 
 export default function ViewRecipe(props) {
   const [recipe, setRecipe] = useState(null);
@@ -70,6 +71,7 @@ export default function ViewRecipe(props) {
         {isAdmin() && <IconButton onClick={openEdit} children={<EditOutlined />} />}
         {isAdmin() && <IconButton onClick={openDeleteModal} children={<DeleteOutlined />} color="red" />}
       </h2>
+          <PictureUpload recipeName={recipe.name} />
       <p style={{ fontStyle: "italic", color: "rgb(0,0,0,0.47)" }}>
         {recipe.type}, {recipe.servings ? `serves ${recipe.servings}` : ""}
       </p>

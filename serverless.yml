@@ -41,7 +41,12 @@ provider:
     - Effect: "Allow"
       Action:
         - "s3:*"
-      Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "${self:custom.picture-bucket-name}" } ] ]  } 
+      Resource:  
+        Fn::Join:
+          - ""
+          - - "arn:aws:s3:::"
+            - "Ref" : "photoStorage"
+            - "/*"
 package:
   exclude:
     - ui/**
@@ -51,11 +56,11 @@ functions:
   recipesAPI:
     name: ${self:service}-recipesAPI
     handler: api/boundary/handler.query
-    cors: true
     events:
       - http:
           path: query 
           method: ANY
+          cors: true
 resources:
   Resources:
     MyStuffTable:
@@ -83,7 +88,8 @@ resources:
     photoStorage:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: "${self:custom.picture-bucket-name}"
+        BucketName: "emmas-recipes-pictures"
+        # AccessControl: Private
         CorsConfiguration:
           CorsRules:
             - AllowedMethods:
@@ -95,6 +101,8 @@ resources:
 custom:
   picture-bucket-name: "emmas-recipes-pictures"
   serverless-offline:
+    stage:
+      - dev
     httpPort: 5000
   client:
     bucketName: "emma-corbett.me.uk"
@@ -106,7 +114,8 @@ custom:
       - dev
     host: localhost
     directory: /tmp
-
+    cors: ./local-s3-cors-config.xml
+    allowMismatchedSignatures: true
   dynamodb:
     stages: 
       - dev

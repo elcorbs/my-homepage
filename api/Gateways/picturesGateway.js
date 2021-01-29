@@ -8,17 +8,24 @@ if (process.env.STAGE == 'dev') {
     endpoint: new AWS.Endpoint('http://localhost:4569'),
   });
 } else {
-  s3 = new AWS.S3();
+  s3 = new AWS.S3({
+    s3ForcePathStyle: true,
+  });
 }
 AWS.config.region = "eu-west-2";
 
-module.exports.getPreSignedUrl = (recipeName) => {
+module.exports.getPreSignedUrl = (recipeName, fileType) => {
+  console.log(process.env.PICTURES_BUCKET)
+  if (fileType !== 'image/jpeg' && fileType !== 'image/png') {
+    return new Promise((_, reject) => reject(`File type is invalid, must be either jpeg or png formats`))
+  }
   const params = {
     Bucket: process.env.PICTURES_BUCKET,
-    Key: recipeName + '.jpg'
+    Key: `${recipeName}.${fileType.split('/')[1]}`,
     // Expires: 60
+    ContentType: fileType
   };
-  console.log(`Getting presigned URL with params ${params}`)
+  console.log(`Getting presigned URL with params ${JSON.stringify(params)}`)
   return new Promise((resolve, reject) => {
     s3.getSignedUrl('putObject', params, function (err, url) {
       if (err) {
@@ -38,7 +45,7 @@ module.exports.savePicture = (recipeName, encodedImage) => {
   })
   let decodedImage = Buffer.from(encodedImage, 'base64');
   const bucketName = process.env.PICTURES_BUCKET;
-  const filePath = recipeName + ".jpg"
+  const filePath = recipeName + ".jpeg"
   const params = {
     "Body": decodedImage,
     "Bucket": bucketName,

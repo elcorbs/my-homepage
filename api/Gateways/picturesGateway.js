@@ -14,15 +14,13 @@ if (process.env.STAGE == 'dev') {
 }
 AWS.config.region = "eu-west-2";
 
-module.exports.getPreSignedUrl = (recipeName, fileType) => {
-  console.log(process.env.PICTURES_BUCKET)
+module.exports.pictureUploadUrl = (recipeName, fileType) => {
   if (fileType !== 'image/jpeg' && fileType !== 'image/png') {
     return new Promise((_, reject) => reject(`File type is invalid, must be either jpeg or png formats`))
   }
   const params = {
     Bucket: process.env.PICTURES_BUCKET,
     Key: `${recipeName}.${fileType.split('/')[1]}`,
-    // Expires: 60
     ContentType: fileType
   };
   console.log(`Getting presigned URL with params ${JSON.stringify(params)}`)

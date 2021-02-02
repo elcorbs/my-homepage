@@ -53,9 +53,9 @@ export async function login(name, password, callback){
 }
 
 export async function getPictureUrl(recipeName, fileType){
-  const schema = `query {pictureUrl(recipeName: "${recipeName}", fileType: "${fileType}")}`;
+  const schema = `query {pictureUploadUrl(recipeName: "${recipeName}", fileType: "${fileType}")}`;
   const response = await queryApi(schema);
-  return response.pictureUrl;
+  return response.pictureUploadUrl;
 }
 
 function mapIngredientToStringLiteral(ingredient) {

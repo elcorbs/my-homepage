@@ -13,7 +13,7 @@ const {
 } = require("../gateways/notesGateway");
 const saveRecipe = require("../usecases/saveRecipe");
 const { login, signup, authenticateUser } = require("../usecases/authentication");
-const { getPreSignedUrl } = require("../gateways/picturesGateway");
+const { pictureUploadUrl } = require("../gateways/picturesGateway");
 
 const recipeToResponse = (recipe) => ({
   name: recipe.Name,
@@ -52,5 +52,5 @@ module.exports.resolvers = {
   note: ({ title }) => getNote(title).then(data => noteToResponse(data)),
   saveNote: (args, context) => authenticateUser(context, args, ({ title, notes }) => updateNotes(title, notes)).then(data => data),
   removeNote: (args, context) => authenticateUser(context, args, ({ title }) => deleteNote(title)).then(data => data),
-  pictureUrl: ({recipeName, fileType}) => getPreSignedUrl(recipeName, fileType).then(url => url)
+  pictureUploadUrl: ({recipeName, fileType}) => pictureUploadUrl(recipeName, fileType).then(url => url)
 }

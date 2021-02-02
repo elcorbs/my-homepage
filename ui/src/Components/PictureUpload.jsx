@@ -1,5 +1,7 @@
-import React, { useState } from "react"
-import { getPictureUrl, savePicture } from "../Gateway/query-recipes";
+import React, { useState, useEffect } from "react"
+import {
+  getPictureUploadUrl, getPictureDownloadUrl, savePicture, getPicture
+} from "../Gateway/query-recipes";
 import { Upload, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import "./pictureUpload.scss"
@@ -14,16 +16,45 @@ function getBase64(file) {
 }
 
 export default function PictureUpload({ recipeName }) {
-
   const [previewVisible, setPreviewVisible] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
   const [pictures, setPictures] = useState([]);
+
+  useEffect(() => {
+    const getAndSetPicture = () => {
+      getPictureDownloadUrl(recipeName)
+        .then(url => {
+          getPicture(url)
+            .then(result => {
+              console.log("retrieved picture", result)
+              if (result) {
+                const picture = {
+                  name: recipeName,
+                  url: result.url,
+                  status: "done",
+                  percent: 100,
+                  uid: 1
+                }
+                setPictures([picture])
+              }
+            })
+            .catch(error => {
+              console.log(error)
+            })
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    }
+    getAndSetPicture();
+  }, [recipeName])
+
 
   const handleUpload = ({ file, onSuccess, onError }) => {
     console.log("Handling upload")
 
     let fileType = file.type
-    getPictureUrl(recipeName, fileType)
+    getPictureUploadUrl(recipeName, fileType)
       .then(url => {
         savePicture(url, file)
           .then(result => {

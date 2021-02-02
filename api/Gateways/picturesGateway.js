@@ -18,14 +18,23 @@ module.exports.pictureUploadUrl = (recipeName, fileType) => {
   if (fileType !== 'image/jpeg' && fileType !== 'image/png') {
     return new Promise((_, reject) => reject(`File type is invalid, must be either jpeg or png formats`))
   }
+
+  return getPresignedUrl(recipeName, {ContentType: fileType}, 'putObject')
+}
+
+module.exports.pictureDownloadUrl = (recipeName) => {
+  return getPresignedUrl(recipeName, {}, 'getObject')
+}
+
+function getPresignedUrl(key, extraParams, method){
   const params = {
     Bucket: process.env.PICTURES_BUCKET,
-    Key: `${recipeName}.${fileType.split('/')[1]}`,
-    ContentType: fileType
+    Key: key,
+    ...extraParams
   };
   console.log(`Getting presigned URL with params ${JSON.stringify(params)}`)
   return new Promise((resolve, reject) => {
-    s3.getSignedUrl('putObject', params, function (err, url) {
+    s3.getSignedUrl(method, params, function (err, url) {
       if (err) {
         console.log(`Error getting presigned url ${err}`)
         reject(err)
@@ -36,6 +45,7 @@ module.exports.pictureUploadUrl = (recipeName, fileType) => {
     });
   })
 }
+
 module.exports.savePicture = (recipeName, encodedImage) => {
   if (!encodedImage) return new Promise((rs, rj) => {
     console.log("No picture so resolving")

@@ -52,10 +52,16 @@ export async function login(name, password, callback){
   })
 }
 
-export async function getPictureUrl(recipeName, fileType){
+export async function getPictureUploadUrl(recipeName, fileType){
   const schema = `query {pictureUploadUrl(recipeName: "${recipeName}", fileType: "${fileType}")}`;
   const response = await queryApi(schema);
   return response.pictureUploadUrl;
+}
+
+export async function getPictureDownloadUrl(recipeName, fileType){
+  const schema = `query {pictureDownloadUrl(recipeName: "${recipeName}")}`;
+  const response = await queryApi(schema);
+  return response.pictureDownloadUrl;
 }
 
 function mapIngredientToStringLiteral(ingredient) {
@@ -114,4 +120,13 @@ export async function savePicture(url, file) {
   }
   const response = await fetch(new URL(url), request);
   return response;
+}
+
+export async function getPicture(url) {
+  const request = {
+    method: 'GET',
+  }
+  const response = await fetch(new URL(url), request);
+
+  return response.status === 404 ? undefined : response;
 }

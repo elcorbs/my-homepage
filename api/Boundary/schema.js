@@ -7,6 +7,7 @@ module.exports.schema =
       notes: [Note]
       note(title: String): Note
       pictureUploadUrl(recipeName: String, fileType: String): String
+      pictureDownloadUrl(recipeName: String): String
     }
     type Mutation {
       addRecipe(input: RecipeInput): Recipe

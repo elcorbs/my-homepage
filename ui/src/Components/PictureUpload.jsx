@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react"
 import {
   getPictureUploadUrl, getPictureDownloadUrl, savePicture, getPicture
 } from "../Gateway/query-recipes";
-import { Upload, Modal } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { Upload, Modal, Image } from 'antd';
+import { getUsername } from "../Utilities/helper-functions";
+import { PlusOutlined, LoadingOutlined } from '@ant-design/icons';
 import "./pictureUpload.scss"
 
 function getBase64(file) {
@@ -15,40 +16,24 @@ function getBase64(file) {
   });
 }
 
-export default function PictureUpload({ recipeName }) {
+function UploadPicture({pictures, recipeName, setPictures}) {
   const [previewVisible, setPreviewVisible] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
-  const [pictures, setPictures] = useState([]);
 
-  useEffect(() => {
-    const getAndSetPicture = () => {
-      getPictureDownloadUrl(recipeName)
-        .then(url => {
-          getPicture(url)
-            .then(result => {
-              console.log("retrieved picture", result)
-              if (result) {
-                const picture = {
-                  name: recipeName,
-                  url: result.url,
-                  status: "done",
-                  percent: 100,
-                  uid: 1
-                }
-                setPictures([picture])
-              }
-            })
-            .catch(error => {
-              console.log(error)
-            })
-        })
-        .catch(error => {
-          console.log(error);
-        })
+  const handleCancel = () => setPreviewVisible(false);
+  const handleChange = ({fileList}) => setPictures(fileList);
+  const handlePreview = async file => {
+    if (!file.url && !file.preview) {
+      if (file.response && file.response.url) {
+        file.url = file.response.url
+      } else {
+        file.preview = await getBase64(file.originFileObj);
+      }
     }
-    getAndSetPicture();
-  }, [recipeName])
 
+    setPreviewImage(file.url || file.preview);
+    setPreviewVisible(true);
+  };
 
   const handleUpload = ({ file, onSuccess, onError }) => {
     console.log("Handling upload")
@@ -71,23 +56,6 @@ export default function PictureUpload({ recipeName }) {
       })
   }
 
-  const handleCancel = () => setPreviewVisible(false);
-
-  const handlePreview = async file => {
-    if (!file.url && !file.preview) {
-      if (file.response && file.response.url) {
-        file.url = file.response.url
-      } else {
-        file.preview = await getBase64(file.originFileObj);
-      }
-    }
-
-    setPreviewImage(file.url || file.preview);
-    setPreviewVisible(true);
-  };
-
-  const handleChange = ({ fileList }) => setPictures(fileList);
-
   function removeImage(file) {
     console.log("removing file")
   }
@@ -98,7 +66,7 @@ export default function PictureUpload({ recipeName }) {
       <div style={{ marginTop: 8 }}>Upload</div>
     </div>
   );
-
+  
   return (
     <>
       <Upload
@@ -121,5 +89,55 @@ export default function PictureUpload({ recipeName }) {
         <img alt="example" style={{ width: '100%' }} src={previewImage} />
       </Modal>
     </>
-  );
+  )
+}
+
+function ViewPicture({picture}) {
+  return (
+    <Image
+      width={200}
+      src={picture.url}
+    />
+  )
+}
+
+export default function Picture({ recipeName }) {
+  const [pictures, setPictures] = useState([]);
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const getAndSetPicture = () => {
+      getPictureDownloadUrl(recipeName)
+        .then(url => {
+          getPicture(url)
+            .then(result => {
+              console.log("retrieved picture", result)
+              if (result) {
+                const picture = {
+                  name: recipeName,
+                  url: result.url,
+                  status: "done",
+                  percent: 100,
+                  uid: 1
+                }
+                setPictures([picture])
+              }
+              setLoading(false)
+            })
+            .catch(error => {
+              console.log(error)
+            })
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    }
+    getAndSetPicture();
+  }, [recipeName])
+  console.log(getUsername())
+
+  if (loading) return <LoadingOutlined />
+  if (getUsername() == "emma") return <UploadPicture pictures={pictures} recipeName={recipeName} setPictures={setPictures} />
+  if (pictures[0]) return <ViewPicture picture={pictures[0]} />
+  return <div />;
 }

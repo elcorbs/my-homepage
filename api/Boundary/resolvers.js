@@ -52,6 +52,6 @@ module.exports.resolvers = {
   note: ({ title }) => getNote(title).then(data => noteToResponse(data)),
   saveNote: (args, context) => authenticateUser(context, args, ({ title, notes }) => updateNotes(title, notes)).then(data => data),
   removeNote: (args, context) => authenticateUser(context, args, ({ title }) => deleteNote(title)).then(data => data),
-  pictureUploadUrl: ({recipeName, fileType}) => pictureUploadUrl(recipeName, fileType).then(url => url),
+  pictureUploadUrl: (args, context) => authenticateUser(context, args, ({recipeName, fileType}) => pictureUploadUrl(recipeName, fileType)).then(url => url),
   pictureDownloadUrl: ({recipeName}) => pictureDownloadUrl(recipeName).then(url => url)
 }

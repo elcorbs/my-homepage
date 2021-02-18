@@ -94,6 +94,7 @@ resources:
           CorsRules:
             - AllowedMethods:
                 - PUT
+                - GET
               AllowedOrigins:
                 - "*"
               AllowedHeaders:

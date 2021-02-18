@@ -137,7 +137,7 @@ export default function Picture({ recipeName }) {
   console.log(getUsername())
 
   if (loading) return <LoadingOutlined />
-  if (getUsername() == "emma") return <UploadPicture pictures={pictures} recipeName={recipeName} setPictures={setPictures} />
+  if (getUsername() === "emma") return <UploadPicture pictures={pictures} recipeName={recipeName} setPictures={setPictures} />
   if (pictures[0]) return <ViewPicture picture={pictures[0]} />
   return <div />;
 }

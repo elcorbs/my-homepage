@@ -21,21 +21,23 @@ function UploadPicture({pictures, recipeName, setPictures}) {
   const [previewImage, setPreviewImage] = useState('');
 
   const handleCancel = () => setPreviewVisible(false);
-  const handleChange = ({fileList}) => setPictures(fileList);
-  const handlePreview = async file => {
-    if (!file.url && !file.preview) {
-      if (file.response && file.response.url) {
-        file.url = file.response.url
-      } else {
-        file.preview = await getBase64(file.originFileObj);
-      }
-    }
 
-    setPreviewImage(file.url || file.preview);
-    setPreviewVisible(true);
-  };
+  const handleChange = ({target}) => {
+    const url = URL.createObjectURL(target.files[0])
+    const file = target.files[0]
+    file.url = url;
+    setPictures([file]);
+    setPreviewImage(url);
+    handleUpload({file})
+  }
+  const onSuccess = (result) => {
+    console.log("success", result)
+  }
+  const onError = (error) => {
+    console.log(error)
+  }
 
-  const handleUpload = ({ file, onSuccess, onError }) => {
+  const handleUpload = ({ file }) => {
     console.log("Handling upload")
 
     let fileType = file.type
@@ -66,30 +68,39 @@ function UploadPicture({pictures, recipeName, setPictures}) {
       <div style={{ marginTop: 8 }}>Upload</div>
     </div>
   );
-  
   return (
-    <>
-      <Upload
-        listType="picture-card"
-        fileList={pictures}
-        customRequest={handleUpload}
-        onPreview={handlePreview}
-        onChange={handleChange}
-        onRemove={removeImage}
-        className="upload"
-      >
-        {pictures.length >= 1 ? null : uploadButton}
-      </Upload>
-      <Modal
-        visible={previewVisible}
-        title={recipeName}
-        footer={null}
-        onCancel={handleCancel}
-      >
-        <img alt="example" style={{ width: '100%' }} src={previewImage} />
-      </Modal>
-    </>
+    <span>
+     <input type="file" accept="image/jpg,image/jpeg,image/png" onChange={handleChange}
+      // style="display: none;"
+      />
+      {pictures && pictures[0] && <img src={pictures[0].url} />}
+    </span>
+
+
   )
+  // return (
+  //   <>
+  //     <Upload
+  //       listType="picture-card"
+  //       fileList={pictures}
+  //       customRequest={handleUpload}
+  //       onPreview={handlePreview}
+  //       onChange={handleChange}
+  //       onRemove={removeImage}
+  //       className="upload"
+  //     >
+  //       {pictures.length >= 1 ? null : uploadButton}
+  //     </Upload>
+  //     <Modal
+  //       visible={previewVisible}
+  //       title={recipeName}
+  //       footer={null}
+  //       onCancel={handleCancel}
+  //     >
+  //       <img alt="example" style={{ width: '100%' }} src={previewImage} />
+  //     </Modal>
+  //   </>
+  // )
 }
 
 function ViewPicture({picture}) {
@@ -134,7 +145,6 @@ export default function Picture({ recipeName }) {
     }
     getAndSetPicture();
   }, [recipeName])
-  console.log(getUsername())
 
   if (loading) return <LoadingOutlined />
   if (getUsername() === "emma") return <UploadPicture pictures={pictures} recipeName={recipeName} setPictures={setPictures} />

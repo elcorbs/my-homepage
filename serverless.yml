@@ -8,6 +8,8 @@ provider:
   stage: ${opt:stage}
   region: eu-west-2
   name: aws
+  apiGateway:
+    shouldStartNameWithService: true
   environment:
     PICTURES_BUCKET: ${self:custom.picture-bucket-name}
     DYNAMO_TABLE: ${self:service}-storage

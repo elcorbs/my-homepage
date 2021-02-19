@@ -38,7 +38,7 @@ function ActionItems({ onRemove, pictureUrl }) {
 function PictureTile({ onRemove, pictureUrl }) {
   return (
     <div className="picture-container">
-      <img src={pictureUrl} className="picture" />
+      <img src={pictureUrl} className="picture" alt="finished recipe" />
       {<ActionItems onRemove={onRemove} pictureUrl={pictureUrl} />}
     </div>
   )

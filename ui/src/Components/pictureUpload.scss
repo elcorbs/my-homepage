@@ -1,5 +1,95 @@
-.upload {
+.picture {
+  position: static;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.upload-container {
+  height: 200px;
+  width: 200px;
+  display: inline-block;
+  border: 1px dashed #d9d9d9;
+  border-radius: 2px;
+  outline: none;
+  transition: border-color .3s;
+  &:hover {
+    border-color: #9d646e;
+  }
+}
+
+.upload-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  &:focus {
+    outline: none;
+  }
+}
+
+.picture-border {
+  position: relative;
+  height: 100%;
+  padding: 8px;
+  overflow: hidden;
+  & span {
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+.action-buttons {
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 10;
+  white-space: nowrap;
+  transform: translate(-50%,-50%);
+  transition: all .3s;  
+  width: 55px;
+  margin: 0 4px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all .3s;
   & a {
     background-image: none !important;
+    color: hsla(0,0%,100%,.85) !important;
+  }
+  & button {
+    color: hsla(0,0%,100%,.85) !important;
+  }
+}
+
+.delete-button {
+  background: none;
+  border: none;
+  text-decoration: none;
+  height: 20px;
+  line-height: 1;
+  width: 24px;
+  padding: 0 0 0 15px;
+  cursor: pointer;
+}
+
+
+.picture-container {
+  overflow: hidden;
+  height: 100%;
+
+  &:hover {
+    background: transparent;
+    & .picture {
+      opacity: 0.5; 
+    }
+    & .action-buttons {
+      opacity: 1;
+    }
   }
 }

@@ -43,12 +43,20 @@ provider:
     - Effect: "Allow"
       Action:
         - "s3:*"
-      Resource:  
+      Resource:
         Fn::Join:
           - ""
           - - "arn:aws:s3:::"
             - "Ref" : "photoStorage"
             - "/*"
+    - Effect: "Allow"
+      Action:
+        - "s3:ListBucket"
+      Resource:  
+        Fn::Join:
+          - ""
+          - - "arn:aws:s3:::"
+            - "Ref" : "photoStorage"
 package:
   exclude:
     - ui/**

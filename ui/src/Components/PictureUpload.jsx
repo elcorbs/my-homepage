@@ -46,6 +46,7 @@ function PictureTile({ onRemove, pictureUrl }) {
 }
 
 function UploadButton({ handleUpload, handleChange, handleSuccess, handleError }) {
+  console.log("Rendering the upload button")
   const uploadButton = (
     <span className="upload-button">
       <div>

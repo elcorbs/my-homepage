@@ -4,7 +4,7 @@ import { PlusOutlined } from '@ant-design/icons';
 const {Option} = Select;
 
 export default function SelectorWithAdd({ options, placeholder, formProps, selectorClassName }) {
-  const [items, setItems] = useState(options);
+  const [items, setItems] = useState(options.filter(o => o));
   const [name, setName] = useState('');
 
   const addItem = () => {
@@ -28,8 +28,8 @@ export default function SelectorWithAdd({ options, placeholder, formProps, selec
         placeholder={placeholder}
         optionFilterProp="children"
         onSearch={value => setName(value)}
-        filterOption={(input, option) =>
-          option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        filterOption={(input, {value}) =>
+          value.toLowerCase().indexOf(input.toLowerCase()) >= 0
         }
         dropdownRender={menu => (
           <div>

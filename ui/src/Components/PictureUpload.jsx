@@ -5,6 +5,7 @@ import {
 import Upload from 'rc-upload';
 import { getUsername } from "../Utilities/helper-functions";
 import { PlusOutlined, LoadingOutlined } from '@ant-design/icons';
+import awaitingImage from '../awaiting-image.png';
 import "./pictureUpload.scss"
 
 function ActionItems({ onRemove, pictureUrl }) {
@@ -46,7 +47,6 @@ function PictureTile({ onRemove, pictureUrl }) {
 }
 
 function UploadButton({ handleUpload, handleChange, handleSuccess, handleError }) {
-  console.log("Rendering the upload button")
   const uploadButton = (
     <span className="upload-button">
       <div>
@@ -100,8 +100,6 @@ function UploadPicture({ pictures, recipeName, setPictures }) {
     setPictures([])
   }
 
-console.log(pictures.length)
-console.log(pictures)
   return (
     pictures.length === 0
       ? <UploadButton
@@ -158,6 +156,9 @@ export default function Picture({ recipeName }) {
     if (pictures[0]) {
       return <PictureTile pictureUrl={pictures[0].url} />;
     }
+    return (
+      <PictureTile pictureUrl={awaitingImage} />
+    )
   }
 
   return (

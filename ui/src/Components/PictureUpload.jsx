@@ -100,6 +100,8 @@ function UploadPicture({ pictures, recipeName, setPictures }) {
     setPictures([])
   }
 
+console.log(pictures.length)
+console.log(pictures)
   return (
     pictures.length === 0
       ? <UploadButton
@@ -147,8 +149,8 @@ export default function Picture({ recipeName }) {
   }, [recipeName])
 
   const content = () => {
-    if (loading){
-      return <LoadingOutlined style={{margin: "45%"}} />;
+    if (loading) {
+      return <LoadingOutlined style={{ margin: "45%" }} />;
     }
     if (getUsername() === "emma") {
       return <UploadPicture pictures={pictures} recipeName={recipeName} setPictures={setPictures} />;

@@ -11,13 +11,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "antd-mobile": "^2.3.4",
-    "html-react-parser": "^0.14.0",
-    "rc-upload": "^3.3.4",
-    "serverless-dynamodb-client": "0.0.2",
-    "serverless-finch": "^2.5.2"
+    "antd-mobile": "^5.21.0",
+    "html-react-parser": "^3.0.1",
+    "rc-upload": "^4.3.4",
+    "serverless-dynamodb-client": "^0.0.2",
+    "serverless-finch": "^4.0.0"
   },
   "devDependencies": {
-    "serverless-s3-local": "^0.6.7"
+    "serverless-s3-local": "^0.6.22"
   }
 }

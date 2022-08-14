@@ -23,7 +23,7 @@ serve-ui:
 
 .PHONY: serve-api
 serve-api:
-	APP_SECRET='app-secret' AWS_ACCESS_KEY_ID='access-key' AWS_SECRET_ACCESS_KEY='secret-key' sls -s dev offline start --httpPort 5000 -r eu-west-2
+	AWS_ACCESS_KEY_ID='access-key' AWS_SECRET_ACCESS_KEY='secret-key' sls offline start -r eu-west-2
 
 .PHONY: serve
 serve:

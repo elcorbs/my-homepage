@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "install-local": "docker pull lambci/lambda && ./node_modules/.bin/sls dynamodb install",
-    "start": "APP_SECRET='app-secret' AWS_ACCESS_KEY_ID='access-key' AWS_SECRET_ACCESS_KEY='secret-key' sls -s dev offline start --httpPort 5000 -r eu-west-2 --noTimeout"
+    "start": "sls offline start -r eu-west-2 --noTimeout"
   },
   "author": "",
   "license": "ISC",
@@ -18,6 +18,9 @@
     "serverless-finch": "^4.0.0"
   },
   "devDependencies": {
+    "serverless-dynamodb-local": "^0.2.40",
+    "serverless-offline": "^9.2.0",
+    "serverless-offline-ssm": "^6.2.0",
     "serverless-s3-local": "^0.6.22"
   }
 }

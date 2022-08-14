@@ -1,11 +1,12 @@
 plugins:
   - serverless-dynamodb-local
-  - serverless-offline
   - serverless-finch
   - serverless-s3-local
+  - serverless-offline-ssm
+  - serverless-offline
 service: my-homepage
 provider:
-  stage: ${opt:stage}
+  stage: ${opt:stage, 'dev'}
   region: eu-west-2
   name: aws
   apiGateway:
@@ -17,51 +18,54 @@ provider:
     REACT_APP_API_URL: https://6lac5t2w1i.execute-api.eu-west-2.amazonaws.com/production/query
     STAGE: ${self:provider.stage}
   runtime: nodejs12.x
-  iamRoleStatements:
-    - Effect: "Allow"
-      Action:
-        - "s3:ListBucket"
-      Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
-    - Effect: "Allow"
-      Action:
-        - dynamodb:GetItem
-        - dynamodb:UpdateItem
-        - dynamodb:Query
-        - dynamodb:Scan
-        - dynamodb:PutItem
-        - dynamodb:DeleteItem
-      Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.DYNAMO_TABLE}"
-    - Effect: "Allow"
-      Action:
-        - "s3:PutObject"
-      Resource:
-        Fn::Join:
-          - ""
-          - - "arn:aws:s3:::"
-            - "Ref" : "ServerlessDeploymentBucket"
-            - "/*"
-    - Effect: "Allow"
-      Action:
-        - "s3:*"
-      Resource:
-        Fn::Join:
-          - ""
-          - - "arn:aws:s3:::"
-            - "Ref" : "photoStorage"
-            - "/*"
-    - Effect: "Allow"
-      Action:
-        - "s3:ListBucket"
-      Resource:  
-        Fn::Join:
-          - ""
-          - - "arn:aws:s3:::"
-            - "Ref" : "photoStorage"
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Action:
+            - "s3:ListBucket"
+          Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
+        - Effect: "Allow"
+          Action:
+            - dynamodb:GetItem
+            - dynamodb:UpdateItem
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:PutItem
+            - dynamodb:DeleteItem
+          Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.DYNAMO_TABLE}"
+        - Effect: "Allow"
+          Action:
+            - "s3:PutObject"
+          Resource:
+            Fn::Join:
+              - ""
+              - - "arn:aws:s3:::"
+                - "Ref" : "ServerlessDeploymentBucket"
+                - "/*"
+        - Effect: "Allow"
+          Action:
+            - "s3:*"
+          Resource:
+            Fn::Join:
+              - ""
+              - - "arn:aws:s3:::"
+                - "Ref" : "photoStorage"
+                - "/*"
+        - Effect: "Allow"
+          Action:
+            - "s3:ListBucket"
+          Resource:  
+            Fn::Join:
+              - ""
+              - - "arn:aws:s3:::"
+                - "Ref" : "photoStorage"
 package:
-  exclude:
-    - ui/**
-    - api/node_modules/serverless-dynamodb-client/**
-    - api/node_modules/serverless-offline/**
+  patterns:
+    - "!ui/**"
+    - "!api/node_modules/serverless-dynamodb-client/**"
+    - "!api/node_modules/serverless-offline/**"
+    - "!node_modules/**"
 functions:
   recipesAPI:
     name: ${self:service}-recipesAPI
@@ -115,6 +119,11 @@ custom:
     stage:
       - dev
     httpPort: 5000
+  serverless-offline-ssm:
+    stages:
+      - dev
+    ssm:
+      "/my-homepage-api/APP_SECRET": "app-secret"
   client:
     bucketName: "emma-corbett.me.uk"
     distributionFolder: ui/build

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import './index.css';
 import App from './App';
 import { createBrowserHistory } from "history";
@@ -11,7 +11,10 @@ const history = createBrowserHistory();
 ReactDOM.render(
   // <React.StrictMode>
     <Router history={history}>
-    <App />
+      <Switch>
+        <Route path="/v2" component={() => <h1>V2 coming soon...</h1>} />
+        <Route component={App} />
+      </Switch>
     </Router>,
   // </React.StrictMode>,
   document.getElementById('root')

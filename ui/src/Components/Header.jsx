@@ -17,7 +17,7 @@ export default function Header({ title }) {
         <div className="site-navigation">
           <Link to="/profile">About Me</Link>
           <Link to="/recipes">Recipes</Link>
-          <Link to="/notes">Notes</Link>
+          {/* <Link to="/notes">Notes</Link> */}
           {loggedIn && <a href="/logout">Logout</a>}
           {!loggedIn && (
             <button className="faux-login-link" onClick={() => toggleLoginForm(!loginFormVisible)}>

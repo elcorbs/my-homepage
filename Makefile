@@ -26,6 +26,4 @@ serve-api:
 	AWS_ACCESS_KEY_ID='access-key' AWS_SECRET_ACCESS_KEY='secret-key' sls offline start -r eu-west-2
 
 .PHONY: serve
-serve:
-	npm run start &
-	cd ui && REACT_APP_API_URL="http://localhost:5000/dev/query" npm run start
+serve: serve-api serve-ui

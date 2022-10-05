@@ -63,7 +63,6 @@ provider:
 package:
   patterns:
     - "!ui/**"
-    - "!api/node_modules/serverless-dynamodb-client/**"
     - "!api/node_modules/serverless-offline/**"
     - "!node_modules/**"
 functions:

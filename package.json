@@ -18,7 +18,7 @@
     "serverless-finch": "^4.0.0"
   },
   "devDependencies": {
-    "serverless-dynamodb-local": "^0.2.40",
+    "serverless-dynamodb-local": "^1.0.2",
     "serverless-offline": "^9.2.0",
     "serverless-offline-ssm": "^6.2.0",
     "serverless-s3-local": "^0.6.22"
